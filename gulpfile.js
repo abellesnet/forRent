@@ -104,7 +104,7 @@ gulp.task("optimize-images", function () {
 
 gulp.task("updated-backend", function () {
     gulp.src("./")
-        .pipe(wait(2000))
+        .pipe(wait(3000))
         .pipe(browserSync.stream())
         .pipe(notify({
             title: "Backend",

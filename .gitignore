@@ -5,4 +5,5 @@ node_modules/
 
 *.pyc
 
+forrent/static/
 db.sqlite3
