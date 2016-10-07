@@ -1,0 +1,44 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand navbar-brand-name" href="/">
+                forRent
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            {#            <div class="navbar-left">#}
+            {#                <ul class="nav navbar-nav">#}
+            {#                    <li><a href="#">Anonimous</a></li>#}
+            {#                </ul>#}
+            {#                {% if user.is_authenticated %}#}
+            {#                    <ul class="nav navbar-nav">#}
+            {#                        <li><a href="#">Authenticated</a></li>#}
+            {#                    </ul>#}
+            {#                {% endif %}#}
+            {#            </div>#}
+            <div class="navbar-right">
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <p class="navbar-text">
+                            <a href="/admin" class="navbar-link">Site administration</a>
+                        </p>
+                    {% endif %}
+                    <p class="navbar-text">
+                        <a href="#" class="navbar-link">{{ user.get_full_name }}</a>
+                    </p>
+                    <a class="btn btn-primary navbar-btn" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="btn btn-primary navbar-btn" href="{% url 'user_create' %}">Register</a>
+                    <a class="btn btn-primary navbar-btn" href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

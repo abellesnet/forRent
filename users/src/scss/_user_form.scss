@@ -1,0 +1,28 @@
+form.signup, form.login {
+
+  p {
+
+    @extend .form-group;
+
+    label {
+      @extend .control-label;
+    }
+
+    input {
+      @extend .form-control;
+
+    }
+
+    .helptext {
+      @extend .help-block;
+
+    }
+  }
+
+  .errorlist {
+    @extend .help-block;
+    color: red;
+
+  }
+
+}

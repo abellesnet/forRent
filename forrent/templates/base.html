@@ -16,7 +16,9 @@
 <body>
 
 {% block header %}
-
+    <header class="header">
+        {% include "includes/header.html" %}
+    </header>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +26,9 @@
 {% endblock %}
 
 {% block footer %}
-
+    <footer class="footer">
+        {% include "includes/footer.html" %}
+    </footer>
 {% endblock %}
 
 <script src="{% static "js/app.js" %}"></script>
