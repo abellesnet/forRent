@@ -9,6 +9,7 @@ class CreateUserForm(UserCreationForm):
     first_name = CharField(max_length=30, min_length=1)
     last_name = CharField(max_length=30, min_length=1)
     email = CharField(min_length=1)
+
     # TODO: improve groups widget in register form
 
     class Meta(UserCreationForm.Meta):
@@ -26,3 +27,9 @@ class CreateUserForm(UserCreationForm):
         if len(groups) != 1:
             raise ValidationError('You must select one group.')
         return groups
+
+    def save(self, commit=True):
+        user = super(CreateUserForm, self).save(commit)
+        if commit:
+            user.groups = self.cleaned_data.get('groups')
+        return user
