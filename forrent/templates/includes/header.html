@@ -13,16 +13,18 @@
             </a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
-            {#            <div class="navbar-left">#}
-            {#                <ul class="nav navbar-nav">#}
-            {#                    <li><a href="#">Anonimous</a></li>#}
-            {#                </ul>#}
-            {#                {% if user.is_authenticated %}#}
-            {#                    <ul class="nav navbar-nav">#}
-            {#                        <li><a href="#">Authenticated</a></li>#}
-            {#                    </ul>#}
-            {#                {% endif %}#}
-            {#            </div>#}
+            <div class="navbar-left">
+                {#                            <ul class="nav navbar-nav">#}
+                {#                                <li><a href="#">Anonimous</a></li>#}
+                {#                            </ul>#}
+                {% if perms.rooms %}
+                    {% if perms.rooms.add_room %}
+                        <ul class="nav navbar-nav">
+                            <li><a href="{% url 'room_create' %}">Create room</a></li>
+                        </ul>
+                    {% endif %}
+                {% endif %}
+            </div>
             <div class="navbar-right">
                 {% if user.is_authenticated %}
                     {% if user.is_staff %}
