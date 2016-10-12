@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="text-center">My Rooms</h1>
+    </div>
+
+    {% include "includes/pagination.html"  with page_obj=page_obj %}
+
+    <div class="container">
+
+        {% for room in object_list %}
+
+            <h4>
+                {{ room }}
+            </h4>
+
+        {% empty %}
+            <p>No rooms yet.</p>
+        {% endfor %}
+
+    </div>
+
+
+{% endblock %}

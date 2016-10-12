@@ -18,11 +18,14 @@
                 {#                                <li><a href="#">Anonimous</a></li>#}
                 {#                            </ul>#}
                 {% if perms.rooms %}
-                    {% if perms.rooms.add_room %}
-                        <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'myrooms_list' %}">My rooms</a></li>
+                        {% endif %}
+                        {% if perms.rooms.add_room %}
                             <li><a href="{% url 'room_create' %}">Create room</a></li>
-                        </ul>
-                    {% endif %}
+                        {% endif %}
+                    </ul>
                 {% endif %}
             </div>
             <div class="navbar-right">
