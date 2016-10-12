@@ -6,6 +6,7 @@ from django.contrib.auth.models import User, Group
 from django.core.management import BaseCommand
 
 from forrent.settings import HOSTS_GROUP_NAME, GUESTS_GROUP_NAME
+from rooms.models import RoomAmenity
 
 
 def create_users(user_names=()):
@@ -34,3 +35,7 @@ class Command(BaseCommand):
             'Raj Koothrappali',
             'Amy Farrah Fowler',
         ))
+
+        room_amenities = ('Internet', 'Kitchen', 'TV', 'Heating', 'Air conditioning', 'Washer', 'Pets allowed',)
+        for amenity in room_amenities:
+            RoomAmenity.objects.get_or_create(name=amenity)
