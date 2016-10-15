@@ -13,7 +13,7 @@
         {% for room in object_list %}
 
             <h4>
-                {{ room }}
+                <a href="{% url 'myrooms_detail' pk=room.pk %}">{{ room }}</a>
             </h4>
 
         {% empty %}
