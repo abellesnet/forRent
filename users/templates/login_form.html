@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+        <form class="login" action method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <input type="hidden" name="next" value="{{ next | default:'/' }}"/>
+
+            <button type="submit" class="form-button btn btn-primary">Login</button>
+
+        </form>
+
+    </div>
+
+
+{% endblock %}
