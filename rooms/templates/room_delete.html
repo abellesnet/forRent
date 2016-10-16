@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+        <form class="signup" action method="post">
+
+            {% csrf_token %}
+
+            <p>Are you sure you want to delete "{{ object }}"?</p>
+
+            <button type="submit" class="form-button btn btn-primary">Confirm</button>
+
+            <a href="{{ object.get_absolute_url }}">Cancel</a>
+
+        </form>
+
+    </div>
+
+
+{% endblock %}

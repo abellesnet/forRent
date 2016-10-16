@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator
 from django.db.models import ForeignKey, CharField, TextField, BooleanField, DecimalField, DateField, IntegerField
 from django.db.models import ManyToManyField
 from django.db.models import Model
+from django.urls import reverse
 
 
 class RoomAmenity(Model):
@@ -32,3 +33,6 @@ class Room(Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('room_detail', kwargs={'pk': self.pk})

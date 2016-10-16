@@ -10,7 +10,11 @@
 
             {{ form.as_p }}
 
-            <button type="submit" class="form-button btn btn-primary">Create</button>
+            <button type="submit" class="form-button btn btn-primary">Save</button>
+
+            {% if form.instance.pk %}
+                <a href="{{ form.instance.get_absolute_url }}">Cancel</a>
+            {% endif %}
 
         </form>
 

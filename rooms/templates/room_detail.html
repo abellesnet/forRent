@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+        <p>{{ object }}</p>
+        <p>{{ object.host }}</p>
+
+        {% if object.host == user %}
+
+            <p>
+                <a href="{% url 'room_update' pk=object.pk %}">UPDATE</a>
+                <a href="{% url 'room_delete' pk=object.pk %}">DELETE</a>
+            </p>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}
