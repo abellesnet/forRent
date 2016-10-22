@@ -32,7 +32,7 @@ class Room(Model):
         unique_together = ('host', 'name',)
 
     def __str__(self):
-        return self.name
+        return '{0} ({1})'.format(self.name, self.host.get_full_name())
 
     def get_absolute_url(self):
         return reverse('room_detail', kwargs={'pk': self.pk})

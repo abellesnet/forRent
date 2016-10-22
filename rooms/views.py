@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 from django.views.generic import CreateView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
@@ -57,3 +58,12 @@ class RoomDeleteView(PermissionRequiredMixin, DeleteView):
         if room and room.host == self.request.user:
             return True
         return False
+
+
+class RoomListView(ListView):
+    template_name = 'room_list.html'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return Room.objects.filter(available_to__gt=now()).order_by('-available_since') \
+            .select_related('host').prefetch_related('amenity_set')

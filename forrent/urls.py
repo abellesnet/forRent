@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 from rooms import urls as rooms_urls
+from rooms.views import RoomListView
 from users import urls as users_urls
 
 urlpatterns = [
@@ -27,6 +28,6 @@ urlpatterns = [
 
     url(r'^room/', include(rooms_urls)),
 
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='home')
+    url(r'^$', RoomListView.as_view(), name='home'),
 
 ]
