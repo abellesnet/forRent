@@ -136,7 +136,14 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
 
+# Media files
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+MEDIA_URL = '/media/'
+
 # Project settings
 
 HOSTS_GROUP_NAME = 'Hosts'
 GUESTS_GROUP_NAME = 'Guests'
+
+

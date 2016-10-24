@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
-from django.db.models import ForeignKey, CharField, TextField, BooleanField, DecimalField, DateField, IntegerField
+from django.db.models import ForeignKey, CharField, TextField, BooleanField, DecimalField, DateField, IntegerField, \
+    DateTimeField
+from django.db.models import ImageField
 from django.db.models import ManyToManyField
 from django.db.models import Model
 from django.urls import reverse
@@ -27,6 +29,9 @@ class Room(Model):
     price_per_day = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     available_since = DateField()
     available_to = DateField()
+    main_photo = ImageField()
+    created_at = DateTimeField(auto_now_add=True)
+    modified_at = DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('host', 'name',)
