@@ -8,6 +8,7 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 
 from rooms.forms import CreateRoomForm
+from rooms.lib import generate_responsive_images
 from rooms.models import Room
 
 
@@ -28,7 +29,9 @@ class RoomCreateView(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         room = form.save(commit=False)
         room.host = self.request.user
-        return super(RoomCreateView, self).form_valid(form)
+        response = super(RoomCreateView, self).form_valid(form)
+        generate_responsive_images(room.main_photo)
+        return response
 
 
 class RoomDetailView(DetailView):
@@ -46,6 +49,12 @@ class RoomUpdateView(PermissionRequiredMixin, UpdateView):
         if room and room.host == self.request.user:
             return True
         return False
+
+    def form_valid(self, form):
+        room = form.save(commit=False)
+        response = super(RoomUpdateView, self).form_valid(form)
+        generate_responsive_images(room.main_photo)
+        return response
 
 
 class RoomDeleteView(PermissionRequiredMixin, DeleteView):

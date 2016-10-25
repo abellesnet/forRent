@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'easy_thumbnails',
     'forrent',
     'users',
     'rooms',
@@ -141,9 +142,19 @@ LOGOUT_REDIRECT_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 MEDIA_URL = '/media/'
 
+# Images
+
+DEFAULT_IMAGE_SIZE = (1200, 629)
+THUMBNAIL_NAMER = 'easy_thumbnails.namers.alias'
+THUMBNAIL_HIGH_RESOLUTION = True
+THUMBNAIL_ALIASES = {
+    '': {
+        'medium': {'size': (992, 520), 'crop': 'smart'},
+        'small': {'size': (768, 402), 'crop': 'smart'},
+    },
+}
+
 # Project settings
 
 HOSTS_GROUP_NAME = 'Hosts'
 GUESTS_GROUP_NAME = 'Guests'
-
-

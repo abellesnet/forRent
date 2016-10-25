@@ -7,7 +7,16 @@
         <p>{{ object }}</p>
         <p>{{ object.host }}</p>
 
-        <img src="/media/{{ object.main_photo}}" alt="My image"/>
+        {% if object.main_photo %}
+
+            <img class="img-responsive center-block" src="/media/{{ object.main_photo }}" alt="My Room"
+                 srcset="
+                     /media/{{ object.main_photo }} 1200w,
+                     /media/{{ object.main_photo }}.medium{{ object.get_main_photo_extension }} 992w,
+                     /media/{{ object.main_photo }}.small{{ object.get_main_photo_extension }} 768w"
+            >
+
+        {% endif %}
 
         {% if object.host == user %}
 
