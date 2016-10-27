@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'easy_thumbnails',
+    'kombu.transport.django',
     'forrent',
     'users',
     'rooms',
@@ -153,6 +154,10 @@ THUMBNAIL_ALIASES = {
         'small': {'size': (768, 402), 'crop': 'smart'},
     },
 }
+
+# Celery
+
+BROKER_URL = 'django://'
 
 # Project settings
 

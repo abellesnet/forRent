@@ -1,5 +1,7 @@
+import glob
 import os
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db.models import ForeignKey, CharField, TextField, BooleanField, DecimalField, DateField, IntegerField, \
@@ -7,6 +9,7 @@ from django.db.models import ForeignKey, CharField, TextField, BooleanField, Dec
 from django.db.models import ManyToManyField
 from django.db.models import Model
 from django.urls import reverse
+from django.utils.crypto import get_random_string
 from easy_thumbnails.fields import ThumbnailerImageField
 
 from rooms.settings import DEFAULT_IMAGE_OPTIONS
@@ -22,6 +25,17 @@ class RoomAmenity(Model):
         return self.name
 
 
+def random_filename(instance, filename):
+    extension = filename.split('.')[-1]
+    return '{}.{}'.format(get_random_string(16), extension)
+
+
+def remove_photos(filename):
+    pattern = '{}{}'.format(os.path.join(settings.MEDIA_ROOT, filename), '*')
+    for file in glob.glob(pattern):
+        os.remove(file)
+
+
 class Room(Model):
     host = ForeignKey(User)
     name = CharField(max_length=128)
@@ -33,7 +47,7 @@ class Room(Model):
     price_per_day = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     available_since = DateField()
     available_to = DateField()
-    main_photo = ThumbnailerImageField(resize_source=DEFAULT_IMAGE_OPTIONS)
+    main_photo = ThumbnailerImageField(resize_source=DEFAULT_IMAGE_OPTIONS, upload_to=random_filename)
     created_at = DateTimeField(auto_now_add=True)
     modified_at = DateTimeField(auto_now=True)
 
@@ -42,6 +56,10 @@ class Room(Model):
 
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.host.get_full_name())
+
+    def delete(self, using=None, keep_parents=False):
+        remove_photos(self.main_photo.name)
+        return super(Room, self).delete(using, keep_parents)
 
     def get_absolute_url(self):
         return reverse('room_detail', kwargs={'pk': self.pk})
