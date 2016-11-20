@@ -1,10 +1,11 @@
 
 .idea/
 
-node_modules/
-
 *.pyc
 
+forrent/db.sqlite3
+forrent/node_modules/
 forrent/static/
-db.sqlite3
-uploads
+forrent/forrent/static/
+
+uploads/
