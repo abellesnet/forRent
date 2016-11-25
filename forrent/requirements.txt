@@ -1,0 +1,5 @@
+Django==1.10.3
+easy-thumbnails==2.3
+pika==0.10.0
+Pillow==3.4.2
+requests==2.11.1

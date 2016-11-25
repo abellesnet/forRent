@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+
+        <p>{{ object }}</p>
+        <p>{{ object.host }}</p>
+
+        {% if object.main_photo %}
+
+            <img class="img-responsive center-block" src="/media/{{ object.main_photo }}" alt="My Room"
+                 srcset="
+                     /media/{{ object.main_photo }} 1200w,
+                     /media/{{ object.main_photo }}.medium{{ object.get_main_photo_extension }} 992w,
+                     /media/{{ object.main_photo }}.small{{ object.get_main_photo_extension }} 768w"
+            >
+
+        {% endif %}
+
+        {% if object.host == user %}
+
+            <p>
+                <a href="{% url 'room_update' pk=object.pk %}">UPDATE</a>
+                <a href="{% url 'room_delete' pk=object.pk %}">DELETE</a>
+            </p>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

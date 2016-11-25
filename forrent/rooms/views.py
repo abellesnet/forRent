@@ -7,7 +7,7 @@ from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
-from rooms.forms import CreateRoomForm
+from rooms.forms import CreateRoomForm, UpdateRoomForm
 from rooms.models import Room
 
 
@@ -26,8 +26,7 @@ class RoomCreateView(PermissionRequiredMixin, CreateView):
     permission_required = ('rooms.add_room',)
 
     def form_valid(self, form):
-        room = form.save(commit=False)
-        room.host = self.request.user
+        form.instance.host = self.request.user
         return super(RoomCreateView, self).form_valid(form)
 
 
@@ -38,7 +37,7 @@ class RoomDetailView(DetailView):
 
 class RoomUpdateView(PermissionRequiredMixin, UpdateView):
     model = Room
-    form_class = CreateRoomForm
+    form_class = UpdateRoomForm
     template_name = 'room_form.html'
 
     def has_permission(self):
