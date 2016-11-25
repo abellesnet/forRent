@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'easy_thumbnails',
-    'kombu.transport.django',
     'forrent',
     'users',
     'rooms',
@@ -116,27 +115,52 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+
+LOGIN_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Logging
+
+LOGGING_URL = os.path.join(BASE_DIR, "logs/")
+
+if not os.path.exists(LOGGING_URL):
+    os.makedirs(LOGGING_URL)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+    },
     'handlers': {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-        }
+        },
+        'infologfile': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_URL, 'info.log'),
+            'maxBytes': 1024 * 1024 * 10,  # 10MB
+            'backupCount': 10,
+            'formatter': 'standard',
+        },
     },
     'loggers': {
         'django.db.backends': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
+        'forrent': {
+            'handlers': ['infologfile', ],
+            'level': 'INFO',
+        },
     }
 }
-
-STATIC_URL = '/static/'
-
-LOGIN_URL = '/login/'
-LOGOUT_REDIRECT_URL = '/'
 
 # Media files
 
@@ -148,16 +172,11 @@ MEDIA_URL = '/media/'
 DEFAULT_IMAGE_SIZE = (1200, 629)
 THUMBNAIL_NAMER = 'easy_thumbnails.namers.alias'
 THUMBNAIL_HIGH_RESOLUTION = True
-THUMBNAIL_ALIASES = {
-    '': {
-        'medium': {'size': (992, 520), 'crop': 'smart'},
-        'small': {'size': (768, 402), 'crop': 'smart'},
-    },
-}
 
-# Celery
+# Broker
 
-BROKER_URL = 'django://'
+BROKER_HOST = 'localhost'
+RESPONSIVE_IMAGE_QUEUE = 'responsive_image'
 
 # Project settings
 

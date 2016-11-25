@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
+import tempfile
 from datetime import timedelta
 from random import randint, uniform
 
+import requests
 from django.contrib.auth.models import User, Group
+from django.core import files
 from django.core.management import BaseCommand, call_command
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 
 from forrent.settings import HOSTS_GROUP_NAME, GUESTS_GROUP_NAME
 from rooms.models import RoomAmenity, Room
+
+ROOM_SET_SIZE = 50
+MEDIA_URL = 'http://lorempixel.com/1200/629/city'
 
 
 def create_users(users=()):
@@ -31,7 +37,17 @@ def create_room_amenities(room_amenities=()):
         RoomAmenity.objects.get_or_create(name=amenity)
 
 
-def create_rooms(quantity=1):
+def download_image_file(image_url):
+    request = requests.get(image_url, stream=True)
+    temporary_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+    for block in request.iter_content(1024 * 8):
+        if not block:
+            break
+        temporary_file.write(block)
+    return format(temporary_file.name.split('/')[-1]), temporary_file
+
+
+def create_rooms():
     users = User.objects.filter(is_superuser=False, groups__name=HOSTS_GROUP_NAME)
     descriptions = (
         'Lorem fistrum amatomaa a wan a wan fistro por la gloria de mi madre. Jarl por la gloria de mi madre torpedo te va a hasé pupitaa va usté muy cargadoo a wan ese hombree ese hombree no te digo trigo por no llamarte Rodrigor benemeritaar. Te voy a borrar el cerito está la cosa muy malar quietooor llevame al sircoo al ataquerl pupita papaar papaar jarl ese que llega. No puedor qué dise usteer papaar papaar mamaar. Te voy a borrar el cerito diodenoo amatomaa por la gloria de mi madre a gramenawer a wan apetecan. Ese pedazo de a gramenawer pupita benemeritaar torpedo se calle ustée de la pradera ahorarr jarl. Mamaar al ataquerl diodeno está la cosa muy malar torpedo. Apetecan te voy a borrar el cerito ese que llega sexuarl jarl no puedor apetecan apetecan.',
@@ -39,7 +55,8 @@ def create_rooms(quantity=1):
         'Lorem fistrum pecador de la pradera ese pedazo de hasta luego Lucas a wan pupita ese pedazo de. Torpedo condemor hasta luego Lucas papaar papaar diodenoo a peich diodeno mamaar ese pedazo de la caidita. La caidita pecador a wan me cago en tus muelas pecador papaar papaar hasta luego Lucas. Está la cosa muy malar caballo blanco caballo negroorl amatomaa se calle ustée llevame al sircoo de la pradera está la cosa muy malar torpedo por la gloria de mi madre a peich. Caballo blanco caballo negroorl de la pradera por la gloria de mi madre te va a hasé pupitaa quietooor pupita qué dise usteer diodenoo. Al ataquerl está la cosa muy malar me cago en tus muelas a wan pupita pupita te va a hasé pupitaa. A wan pupita ese que llega me cago en tus muelas a peich llevame al sircoo la caidita benemeritaar llevame al sircoo pupita. Amatomaa no puedor caballo blanco caballo negroorl condemor quietooor está la cosa muy malar. No puedor papaar papaar la caidita sexuarl ese hombree.\nHasta luego Lucas diodenoo apetecan pecador te va a hasé pupitaa no puedor se calle ustée amatomaa va usté muy cargadoo. A peich ese que llega amatomaa a peich ahorarr la caidita ahorarr. Ese hombree apetecan condemor quietooor a wan. Va usté muy cargadoo de la pradera papaar papaar no puedor a peich caballo blanco caballo negroorl diodeno a peich papaar papaar quietooor. Por la gloria de mi madre benemeritaar va usté muy cargadoo está la cosa muy malar a peich sexuarl no te digo trigo por no llamarte Rodrigor fistro no te digo trigo por no llamarte Rodrigor sexuarl. Ese hombree la caidita amatomaa apetecan ese pedazo de papaar papaar a wan la caidita.\nBenemeritaar por la gloria de mi madre no puedor fistro. A gramenawer diodeno te va a hasé pupitaa ese pedazo de. Mamaar papaar papaar pecador ese hombree ahorarr sexuarl a wan mamaar. Pupita quietooor ese hombree hasta luego Lucas hasta luego Lucas ese que llega ese hombree te va a hasé pupitaa la caidita ahorarr jarl. Se calle ustée a peich va usté muy cargadoo no puedor a peich no te digo trigo por no llamarte Rodrigor qué dise usteer te va a hasé pupitaa se calle ustée por la gloria de mi madre. Se calle ustée ahorarr amatomaa mamaar no puedor ahorarr ahorarr te va a hasé pupitaa. Apetecan pecador de la pradera diodeno a wan a gramenawer al ataquerl.',
     )
     room_amenities = RoomAmenity.objects.all()
-    for _ in range(quantity):
+    for room_number in range(ROOM_SET_SIZE):
+        print('Creating room {0} of {1}'.format(room_number + 1, ROOM_SET_SIZE))
         description = descriptions[randint(0, len(descriptions) - 1)]
         words = description.split(' ')
         long = randint(3, 5)
@@ -51,7 +68,7 @@ def create_rooms(quantity=1):
             if room_amenities[i] not in amenities_set:
                 amenities_set.append(room_amenities[i])
         random_date = timezone.now() + timedelta(days=randint(-30, 90))
-        room_created = Room.objects.create(
+        room_created = Room(
             host=users[randint(0, len(users) - 1)],
             name=name,
             description=description,
@@ -62,6 +79,8 @@ def create_rooms(quantity=1):
             available_since=random_date,
             available_to=random_date + timedelta(days=randint(7, 120))
         )
+        file_name, file = download_image_file(MEDIA_URL)
+        room_created.main_photo.save(file_name, files.File(file))
         room_created.amenities = amenities_set
         room_created.save()
 
@@ -82,4 +101,4 @@ class Command(BaseCommand):
         create_room_amenities(
             ('Internet', 'Kitchen', 'TV', 'Heating', 'Air conditioning', 'Washer', 'Pets allowed',))
 
-        create_rooms(100)
+        create_rooms()

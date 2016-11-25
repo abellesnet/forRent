@@ -12,6 +12,7 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from easy_thumbnails.fields import ThumbnailerImageField
 
+from rooms.lib import generate_responsive_room_main_photo_images
 from rooms.settings import DEFAULT_IMAGE_OPTIONS
 
 
@@ -25,9 +26,12 @@ class RoomAmenity(Model):
         return self.name
 
 
+ROOM_IMAGE_ROOT = 'post/image/'
+
+
 def random_filename(instance, filename):
     extension = filename.split('.')[-1]
-    return '{}.{}'.format(get_random_string(16), extension)
+    return '{0}{1}.{2}'.format(ROOM_IMAGE_ROOT, get_random_string(16), extension)
 
 
 def remove_photos(filename):
@@ -56,6 +60,13 @@ class Room(Model):
 
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.host.get_full_name())
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        is_new = self.pk is None
+        response = super(Room, self).save(force_insert, force_update, using, update_fields)
+        if is_new:
+            generate_responsive_room_main_photo_images(self.main_photo)
+        return response
 
     def delete(self, using=None, keep_parents=False):
         remove_photos(self.main_photo.name)

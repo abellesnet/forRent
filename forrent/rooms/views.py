@@ -8,7 +8,6 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 
 from rooms.forms import CreateRoomForm, UpdateRoomForm
-from rooms.lib import generate_responsive_room_main_photo_images
 from rooms.models import Room
 
 
@@ -27,11 +26,8 @@ class RoomCreateView(PermissionRequiredMixin, CreateView):
     permission_required = ('rooms.add_room',)
 
     def form_valid(self, form):
-        room = form.save(commit=False)
-        room.host = self.request.user
-        response = super(RoomCreateView, self).form_valid(form)
-        generate_responsive_room_main_photo_images.delay(room.pk)
-        return response
+        form.instance.host = self.request.user
+        return super(RoomCreateView, self).form_valid(form)
 
 
 class RoomDetailView(DetailView):

@@ -6,6 +6,10 @@
 forrent/db.sqlite3
 forrent/node_modules/
 forrent/static/
-forrent/forrent/static/
+forrent/logs/
+forrent/secret_key.txt
+
+imageprocessor/db.sqlite3
+imageprocessor/logs/
 
 uploads/

@@ -1,0 +1,26 @@
+version: '2'
+services:
+  api_gateway:
+    build: ./forrent
+    image: forrent:forrent
+    container_name: 'forrent_api_gateway'
+    ports:
+      - "8000:8000"
+    links:
+      - broker
+    volumes:
+      - ./uploads:/usr/src/uploads
+  broker:
+    image: rabbitmq:3.6.5
+    container_name: 'forrent_broker'
+    ports:
+      - "4369:4369"
+      - "5671-5672:5671-5672"
+      - "25672:25672"
+  imageprocessor:
+    build: ./imageprocessor
+    image: forrent:imageprocessor
+    links:
+      - broker
+    volumes_from:
+      - api_gateway
