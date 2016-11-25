@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="text-center">My Rooms</h1>
+    </div>
+
+    {% include "includes/pagination.html"  with page_obj=page_obj %}
+
+    <div class="container">
+
+        {% for room in object_list %}
+
+            <h4>
+                <a href="{{ room.get_absolute_url }}">{{ room }}</a>
+                <a href="{% url 'room_update' pk=room.pk %}">UPDATE</a>
+                <a href="{% url 'room_delete' pk=room.pk %}">DELETE</a>
+            </h4>
+
+        {% empty %}
+            <p>No rooms yet.</p>
+        {% endfor %}
+
+    </div>
+
+
+{% endblock %}
