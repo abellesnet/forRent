@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block content %}
 
     <div class="container">
-        <h1 class="text-center">My Rooms</h1>
+        <h1 class="text-center">
+            {% trans "My rooms" %}
+        </h1>
     </div>
 
     {% include "includes/pagination.html"  with page_obj=page_obj %}
@@ -14,8 +18,12 @@
 
             <h4>
                 <a href="{{ room.get_absolute_url }}">{{ room }}</a>
-                <a href="{% url 'room_update' pk=room.pk %}">UPDATE</a>
-                <a href="{% url 'room_delete' pk=room.pk %}">DELETE</a>
+                <a href="{% url 'room_update' pk=room.pk %}">
+                    {% trans "Update" %}
+                </a>
+                <a href="{% url 'room_delete' pk=room.pk %}">
+                    {% trans "Delete" %}
+                </a>
             </h4>
 
         {% empty %}
