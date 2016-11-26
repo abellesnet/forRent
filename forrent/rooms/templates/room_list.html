@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block content %}
 
     <div class="container">
-        <h1 class="text-center">Rooms for Rent</h1>
+        <h1 class="text-center">
+            {% trans "Rooms for rent" %}
+        </h1>
     </div>
 
     {% include "includes/pagination.html"  with page_obj=page_obj %}
@@ -17,7 +21,9 @@
             </h4>
 
         {% empty %}
-            <p>No rooms yet.</p>
+            <p>
+                {% trans "No rooms yet." %}
+            </p>
         {% endfor %}
 
     </div>

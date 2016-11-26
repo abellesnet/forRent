@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block content %}
 
     <div class="container">
@@ -8,11 +10,19 @@
 
             {% csrf_token %}
 
-            <p>Are you sure you want to delete "{{ object }}"?</p>
+            <p>
+                {% blocktrans trimmed %}
+                    Are you sure you want to delete "{{ object }}"?
+                {% endblocktrans %}
+            </p>
 
-            <button type="submit" class="form-button btn btn-primary">Confirm</button>
+            <button type="submit" class="form-button btn btn-primary">
+                {% trans "Confirm" %}
+            </button>
 
-            <a href="{{ object.get_absolute_url }}">Cancel</a>
+            <a href="{{ object.get_absolute_url }}">
+                {% trans "Cancel" %}
+            </a>
 
         </form>
 
