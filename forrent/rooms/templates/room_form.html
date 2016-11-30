@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <div class="container">
+
+        <form class="signup" action method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="form-button btn btn-primary">
+                {% trans "Save" %}
+            </button>
+
+            {% if form.instance.pk %}
+                <a href="{{ form.instance.get_absolute_url }}">
+                    {% trans "Cancel" %}
+                </a>
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+{% endblock %}

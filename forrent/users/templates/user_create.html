@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <div class="container">
+
+        <form class="signup" action method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="form-button btn btn-primary">
+                {% trans "Register" %}
+            </button>
+
+        </form>
+
+    </div>
+
+
+{% endblock %}

@@ -1,8 +1,16 @@
 
 .idea/
 
-node_modules/
-
 *.pyc
 
-db.sqlite3
+forrent/db.sqlite3
+forrent/node_modules/
+forrent/static/
+forrent/logs/
+forrent/secret_key.txt
+
+imageprocessor/db.sqlite3
+imageprocessor/logs/
+
+db/
+uploads/

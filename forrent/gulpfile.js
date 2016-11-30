@@ -20,12 +20,13 @@ var htmlFiles = ["**/templates/**/*.html"];
 var scssFiles = ["**/" + src + "scss/**/*.scss"];
 var jsFiles = ["**/" + src + "js/**/*.js"];
 var imagesDir = [project + src + "img/*"];
+var fontsDir = [project + src + "fonts/*"];
 
 var backendFiles = ["**/*.py"];
 
 gulp.task(
     "default",
-    ["compile-sass", "concat-js", "optimize-images"],
+    ["compile-sass", "concat-js", "optimize-images", "copy-fonts"],
     function () {
 
         browserSync.init({
@@ -40,6 +41,8 @@ gulp.task(
         gulp.watch(jsFiles, ["concat-js"]);
 
         gulp.watch(imagesDir, ["optimize-images"]);
+
+        gulp.watch(fontsDir, ["copy-fonts"]);
 
         gulp.watch(backendFiles, ["updated-backend"]);
 
@@ -102,9 +105,19 @@ gulp.task("optimize-images", function () {
         }));
 });
 
+gulp.task("copy-fonts", function () {
+    gulp.src(fontsDir)
+        .pipe(gulp.dest(dest + "fonts"))
+        .pipe(browserSync.stream())
+        .pipe(notify({
+            title: "Fonts",
+            message: "Copied"
+        }));
+});
+
 gulp.task("updated-backend", function () {
     gulp.src("./")
-        .pipe(wait(2000))
+        .pipe(wait(3000))
         .pipe(browserSync.stream())
         .pipe(notify({
             title: "Backend",
