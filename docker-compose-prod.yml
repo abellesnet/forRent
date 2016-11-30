@@ -1,0 +1,27 @@
+version: '2'
+services:
+  api_gateway:
+    image: abelles/forrent:tag
+    mem_limit: 268435456
+    ports:
+      - "80:8000"
+    links:
+      - broker
+    volumes:
+      - /usr/src/db:/usr/src/db
+      - /usr/src/uploads:/usr/src/uploads
+  broker:
+    image: rabbitmq:3.6.5
+    mem_limit: 134217728
+    ports:
+      - "4369:4369"
+      - "5671:5671"
+      - "5672:5672"
+      - "25672:25672"
+  imageprocessor:
+    image: abelles/forrent-imageprocessor:tag
+    mem_limit: 134217728
+    links:
+      - broker
+    volumes_from:
+      - api_gateway

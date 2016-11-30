@@ -12,4 +12,5 @@ forrent/secret_key.txt
 imageprocessor/db.sqlite3
 imageprocessor/logs/
 
+db/
 uploads/

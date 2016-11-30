@@ -1,4 +1,5 @@
 #!/bin/bash
+# start microservices on development
 
 # remove old project containers, if they exist
 docker rm -f $(docker ps -q -a -f name=forrent)

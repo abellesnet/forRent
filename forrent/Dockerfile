@@ -21,10 +21,6 @@ COPY . .
 
 RUN python manage.py collectstatic --noinput --settings=forrent.settings_prod
 
-RUN python manage.py migrate --settings=forrent.settings_prod
-
-RUN python manage.py config_project --settings=forrent.settings_prod
-
 RUN mkdir /var/log/uwsgi
 
 RUN ln -s /usr/src/forrent/forrent.nginx /etc/nginx/sites-enabled/
@@ -33,4 +29,6 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 8000
 
-CMD ["/usr/bin/supervisord"]
+RUN chmod +x /usr/src/forrent/run.sh
+
+ENTRYPOINT exec /usr/src/forrent/run.sh

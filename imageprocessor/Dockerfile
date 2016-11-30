@@ -15,8 +15,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-RUN python manage.py migrate --settings=imageprocessor.settings_prod
-
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/usr/bin/supervisord"]
+RUN chmod +x /usr/src/imageprocessor/run.sh
+
+ENTRYPOINT exec /usr/src/imageprocessor/run.sh

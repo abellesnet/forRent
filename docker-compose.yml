@@ -2,13 +2,14 @@ version: '2'
 services:
   api_gateway:
     build: ./forrent
-    image: forrent:forrent
+    image: abelles/forrent
     container_name: 'forrent_api_gateway'
     ports:
       - "8000:8000"
     links:
       - broker
     volumes:
+      - ./db:/usr/src/db
       - ./uploads:/usr/src/uploads
   broker:
     image: rabbitmq:3.6.5
@@ -19,7 +20,7 @@ services:
       - "25672:25672"
   imageprocessor:
     build: ./imageprocessor
-    image: forrent:imageprocessor
+    image: abelles/forrent-imageprocessor
     links:
       - broker
     volumes_from:
