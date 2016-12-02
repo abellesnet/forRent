@@ -14,23 +14,22 @@
 
     <div class="container">
 
-        {% for room in object_list %}
+        <section class="row">
 
-            <h4>
-                <a href="{{ room.get_absolute_url }}">{{ room }}</a>
-                <a href="{% url 'room_update' pk=room.pk %}">
-                    {% trans "Update" %}
-                </a>
-                <a href="{% url 'room_delete' pk=room.pk %}">
-                    {% trans "Delete" %}
-                </a>
-            </h4>
+            {% for room in object_list %}
 
-        {% empty %}
-            <p>No rooms yet.</p>
-        {% endfor %}
+                {% include "includes/room_in_list.html"  with room=room %}
+
+            {% empty %}
+                <p>
+                    {% trans "No rooms yet." %}
+                </p>
+            {% endfor %}
+
+        </section>
 
     </div>
+
 
 
 {% endblock %}

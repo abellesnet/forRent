@@ -1,0 +1,29 @@
+{% load i18n %}
+
+{% load static %}
+
+<article class="article col-xs-12 col-sm-6 col-md-4 col-lg-3">
+    <div class="thumbnail">
+        <a href="{{ room.get_absolute_url }}">
+            <img class="room-image img-responsive" src="/media/{{ room.main_photo }}" alt="{{ room.name }}"
+                 srcset="
+                     /media/{{ room.main_photo }} 1200w,
+                     /media/{{ room.main_photo }}.medium{{ room.image_extension }} 992w,
+                     /media/{{ room.main_photo }}.small{{ room.image_extension }} 768w"
+            >
+            <div class="row">
+                <h5 class="room-name text-uppercase col-xs-12">{{ room.name }}</h5>
+            </div>
+        </a>
+        <div class="row">
+            <img class="host-photo col-xs-4" src="{% static "img/no-photo.png" %}">
+            <div class="col-xs-8">
+                <div class="row">
+                    <div class="host col-xs-12">{{ room.host.get_full_name }}</div>
+{#                    <div class="rating col-xs-12">rating</div>#}
+                    <div class="price col-xs-12">{{ room.price_per_day }} €</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

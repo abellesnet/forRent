@@ -80,3 +80,9 @@ class Room(Model):
             return None
         name, extension = os.path.splitext(self.main_photo.name)
         return extension
+
+    def image_extension(self):
+        if not self.main_photo:
+            return None
+        name, extension = os.path.splitext(self.main_photo.name)
+        return extension
