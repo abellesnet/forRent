@@ -2,37 +2,122 @@
 
 {% load i18n %}
 
+{% load static %}
+
 {% block content %}
 
-    <div class="container">
+    <div class="room-detail">
 
-        <p>{{ object }}</p>
-        <p>{{ object.host }}</p>
+        <div class="container-fluid">
 
-        {% if object.main_photo %}
-
-            <img class="img-responsive center-block" src="/media/{{ object.main_photo }}" alt="{% trans "My room" %}"
-                 srcset="
+            {% if object.main_photo %}
+                <div class="row">
+                    <img class="main-photo img-responsive" src="/media/{{ object.main_photo }}"
+                         alt="{% trans "My room" %}"
+                         srcset="
                      /media/{{ object.main_photo }} 1200w,
                      /media/{{ object.main_photo }}.medium{{ object.get_main_photo_extension }} 992w,
                      /media/{{ object.main_photo }}.small{{ object.get_main_photo_extension }} 768w"
-            >
+                    >
+                </div>
+            {% endif %}
+        </div>
 
-        {% endif %}
+        <div class="container">
 
-        {% if object.host == user %}
+            <div class="row">
+                <span class="room-name col-xs-12 text-justify">{{ room.name }}</span>
+            </div>
 
-            <p>
-                <a href="{% url 'room_update' pk=object.pk %}">
-                    {% trans "Update" %}
-                </a>
-                <a href="{% url 'room_delete' pk=object.pk %}">
-                    {% trans "Delete" %}
-                </a>
-            </p>
+            <div class="row">
+                <img class="host-photo col-xs-4" src="{% static "img/no-photo.png" %}">
+                <div class="col-xs-8">
+                    <div class="row">
+                        <div class="host col-xs-12">{{ room.host.get_full_name }}</div>
+                        {#                    <div class="rating col-xs-12">rating</div>#}
+                    </div>
+                </div>
+            </div>
 
-        {% endif %}
+
+            <hr>
+
+            <div class="row">
+                <div class="col-xs-4 text-center">
+                    <img class="detail-icon" src="{% static "img/accommodates.png" %}">
+                </div>
+                <div class="col-xs-4 text-center">
+                    <img class="detail-icon" src="{% static "img/beds.png" %}">
+                </div>
+                <div class="col-xs-4 text-center">
+                    {% if room.private_bathroom %}
+                        <img class="detail-icon" src="{% static "img/bathroom.png" %}">
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4 text-center">
+                    <span>{{ room.accommodates }} {% trans "Guests" %}</span>
+                </div>
+                <div class="col-xs-4 text-center">
+                    <span>{{ room.beds }} {% trans "Beds" %}</span>
+                </div>
+                <div class="col-xs-4 text-center">
+                    {% if room.private_bathroom %}
+                        <span>{% trans "Private bathroom" %}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if room.amenity_set.all.count > 0 %}
+
+                <hr>
+
+                <div class="row">
+                    <span class="col-xs-12">
+                        {{ room.amenity_set.all|join:", " }}.
+                    </span>
+                </div>
+
+            {% endif %}
+
+            <hr>
+
+            <div class="row">
+                <span class="price col-xs-12">{{ room.price_per_day }}€ {% trans "per day" %}</span>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <p class="col-xs-12 text-justify">
+                    {{ room.description }}
+                </p>
+            </div>
+
+            {% if object.host == user %}
+
+                <hr>
+
+                <div class="row">
+                    <p class="col-xs-12 text-center">
+                        <a class="btn btn-primary" role="button" href="{% url 'room_update' pk=object.pk %}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            {% trans "Update" %}
+                        </a>
+                        <a class="btn btn-primary" role="button" href="{% url 'room_delete' pk=object.pk %}">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            {% trans "Delete" %}
+                        </a>
+                    </p>
+                </div>
+
+            {% endif %}
+
+        </div>
 
     </div>
+
 
 {% endblock %}
