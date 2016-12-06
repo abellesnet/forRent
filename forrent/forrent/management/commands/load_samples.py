@@ -8,7 +8,6 @@ from django.contrib.auth.models import User, Group
 from django.core import files
 from django.core.management import BaseCommand, call_command
 from django.utils import timezone
-from django.utils.crypto import get_random_string
 
 from forrent.settings import HOSTS_GROUP_NAME, GUESTS_GROUP_NAME
 from rooms.models import RoomAmenity, Room
@@ -48,7 +47,7 @@ def download_image_file(image_url):
 
 
 def create_rooms():
-    users = User.objects.filter(is_superuser=False, groups__name=HOSTS_GROUP_NAME)
+    hosts = User.objects.filter(is_superuser=False, groups__name=HOSTS_GROUP_NAME)
     descriptions = (
         'Lorem fistrum amatomaa a wan a wan fistro por la gloria de mi madre. Jarl por la gloria de mi madre torpedo te va a hasé pupitaa va usté muy cargadoo a wan ese hombree ese hombree no te digo trigo por no llamarte Rodrigor benemeritaar. Te voy a borrar el cerito está la cosa muy malar quietooor llevame al sircoo al ataquerl pupita papaar papaar jarl ese que llega. No puedor qué dise usteer papaar papaar mamaar. Te voy a borrar el cerito diodenoo amatomaa por la gloria de mi madre a gramenawer a wan apetecan. Ese pedazo de a gramenawer pupita benemeritaar torpedo se calle ustée de la pradera ahorarr jarl. Mamaar al ataquerl diodeno está la cosa muy malar torpedo. Apetecan te voy a borrar el cerito ese que llega sexuarl jarl no puedor apetecan apetecan.',
         'Lorem fistrum ahorarr condemor sexuarl pecador. Llevame al sircoo no te digo trigo por no llamarte Rodrigor benemeritaar caballo blanco caballo negroorl diodenoo llevame al sircoo ahorarr jarl apetecan a wan la caidita. Diodenoo a wan ese hombree se calle ustée ese hombree está la cosa muy malar a wan. La caidita a gramenawer benemeritaar ese que llega pecador fistro ahorarr se calle ustée está la cosa muy malar por la gloria de mi madre torpedo. Está la cosa muy malar ahorarr ese pedazo de la caidita.\nBenemeritaar pupita a gramenawer al ataquerl. Hasta luego Lucas de la pradera sexuarl me cago en tus muelas va usté muy cargadoo está la cosa muy malar a peich sexuarl pupita ahorarr. Hasta luego Lucas ese pedazo de está la cosa muy malar fistro te voy a borrar el cerito pupita tiene musho peligro ese que llega hasta luego Lucas apetecan caballo blanco caballo negroorl. Está la cosa muy malar se calle ustée benemeritaar diodenoo no te digo trigo por no llamarte Rodrigor por la gloria de mi madre por la gloria de mi madre a peich fistro jarl por la gloria de mi madre. Ese hombree ese que llega torpedo caballo blanco caballo negroorl está la cosa muy malar qué dise usteer diodeno al ataquerl. Pecador mamaar no te digo trigo por no llamarte Rodrigor qué dise usteer sexuarl a wan a gramenawer. Al ataquerl pecador la caidita se calle ustée llevame al sircoo torpedo qué dise usteer condemor apetecan la caidita. Fistro a peich diodenoo te va a hasé pupitaa pecador papaar papaar ese que llega mamaar. Condemor ese que llega se calle ustée al ataquerl mamaar a peich.',
@@ -60,16 +59,14 @@ def create_rooms():
         description = descriptions[randint(0, len(descriptions) - 1)]
         words = description.split(' ')
         long = randint(3, 5)
-        name = ' '.join(words[randint(0, len(words) - long):][:long]) \
-                   .replace('.', '').replace('\n', ' ').capitalize() + ' ' + get_random_string(length=8) + '.'
-        name.replace('..', '.')
+        name = ' '.join(words[randint(0, len(words) - long):][:long]).replace('.', '').replace('\n', ' ').capitalize()
         amenities_set = []
         for i in range(randint(0, len(room_amenities))):
             if room_amenities[i] not in amenities_set:
                 amenities_set.append(room_amenities[i])
         random_date = timezone.now() + timedelta(days=randint(-30, 90))
         room_created = Room(
-            host=users[randint(0, len(users) - 1)],
+            host=hosts[randint(0, len(hosts) - 1)],
             name=name,
             description=description,
             accommodates=randint(1, 4),
@@ -99,6 +96,7 @@ class Command(BaseCommand):
         ))
 
         create_room_amenities(
-            ('Internet', 'Kitchen', 'TV', 'Heating', 'Air conditioning', 'Washer', 'Pets allowed',))
+            ('Internet', 'Kitchen', 'TV', 'Heating', 'Air conditioning', 'Washer', 'Pets allowed',)
+        )
 
         create_rooms()

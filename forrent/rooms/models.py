@@ -26,7 +26,7 @@ class RoomAmenity(Model):
         return self.name
 
 
-ROOM_IMAGE_ROOT = 'post/image/'
+ROOM_IMAGE_ROOT = 'room/image/'
 
 
 def random_filename(instance, filename):
@@ -55,9 +55,6 @@ class Room(Model):
     created_at = DateTimeField(auto_now_add=True)
     modified_at = DateTimeField(auto_now=True)
 
-    class Meta:
-        unique_together = ('host', 'name',)
-
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.host.get_full_name())
 
@@ -76,12 +73,6 @@ class Room(Model):
         return reverse('room_detail', kwargs={'pk': self.pk})
 
     def get_main_photo_extension(self):
-        if not self.main_photo:
-            return None
-        name, extension = os.path.splitext(self.main_photo.name)
-        return extension
-
-    def image_extension(self):
         if not self.main_photo:
             return None
         name, extension = os.path.splitext(self.main_photo.name)
