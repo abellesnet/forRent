@@ -8,8 +8,8 @@
             <img class="room-image img-responsive" src="/media/{{ room.main_photo }}" alt="{{ room.name }}"
                  srcset="
                      /media/{{ room.main_photo }} 1200w,
-                     /media/{{ room.main_photo }}.medium{{ room.image_extension }} 992w,
-                     /media/{{ room.main_photo }}.small{{ room.image_extension }} 768w"
+                     /media/{{ room.main_photo }}.medium{{ room.get_main_photo_extension }} 992w,
+                     /media/{{ room.main_photo }}.small{{ room.get_main_photo_extension }} 768w"
             >
             <div class="row">
                 <h5 class="room-name text-uppercase col-xs-12">{{ room.name }}</h5>
