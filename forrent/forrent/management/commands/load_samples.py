@@ -80,7 +80,7 @@ def create_rooms(size=0):
         )
         file_name, file = download_image_file(ROOM_MEDIA_URL)
         room_created.main_photo.save(file_name, files.File(file))
-        room_created.amenities = amenities_set
+        room_created.amenity_set = amenities_set
         room_created.save()
 
 
