@@ -6,27 +6,35 @@
 
     <div class="container">
 
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h4><span class="label label-danger">
+                    {% trans "Are you sure you want to delete this room?" %}
+                </span></h4>
+            </div>
+        </div>
+
         <form class="signup" action method="post">
 
             {% csrf_token %}
 
-            <p>
-                {% blocktrans trimmed %}
-                    Are you sure you want to delete "{{ object }}"?
-                {% endblocktrans %}
-            </p>
-
-            <button type="submit" class="form-button btn btn-primary">
-                {% trans "Confirm" %}
-            </button>
-
-            <a href="{{ object.get_absolute_url }}">
-                {% trans "Cancel" %}
-            </a>
+            <div class="row">
+                <p class="col-xs-12 text-center">
+                    <button type="submit" class="host-button form-button btn btn-danger">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        {% trans "Delete" %}
+                    </button>
+                    <a class="host-button btn btn-default" role="button" href="{{ object.get_absolute_url }}">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        {% trans "Cancel" %}
+                    </a>
+                </p>
+            </div>
 
         </form>
 
     </div>
 
+    {% include "includes/room_detailed.html"  with room=object %}
 
 {% endblock %}

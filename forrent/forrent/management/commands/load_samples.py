@@ -8,13 +8,23 @@ from django.contrib.auth.models import User, Group
 from django.core import files
 from django.core.management import BaseCommand, call_command
 from django.utils import timezone
-from django.utils.crypto import get_random_string
 
 from forrent.settings import HOSTS_GROUP_NAME, GUESTS_GROUP_NAME
 from rooms.models import RoomAmenity, Room
+from users.models import Profile
 
 ROOM_SET_SIZE = 50
-MEDIA_URL = 'http://lorempixel.com/1200/629/city'
+ROOM_MEDIA_URL = 'http://lorempixel.com/1200/629/city'
+
+
+def download_image_file(image_url):
+    request = requests.get(image_url, stream=True)
+    temporary_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+    for block in request.iter_content(1024 * 8):
+        if not block:
+            break
+        temporary_file.write(block)
+    return format(temporary_file.name.split('/')[-1]), temporary_file
 
 
 def create_users(users=()):
@@ -30,6 +40,10 @@ def create_users(users=()):
             user_created.set_password(username)
             user_created.groups = [Group.objects.get(name=user[1]), ]
             user_created.save()
+            profile, created = Profile.objects.get_or_create(user=user_created)
+            file_name, file = download_image_file(user[2])
+            profile.photo.save(file_name, files.File(file))
+            profile.save()
 
 
 def create_room_amenities(room_amenities=()):
@@ -37,39 +51,24 @@ def create_room_amenities(room_amenities=()):
         RoomAmenity.objects.get_or_create(name=amenity)
 
 
-def download_image_file(image_url):
-    request = requests.get(image_url, stream=True)
-    temporary_file = tempfile.NamedTemporaryFile(suffix='.jpg')
-    for block in request.iter_content(1024 * 8):
-        if not block:
-            break
-        temporary_file.write(block)
-    return format(temporary_file.name.split('/')[-1]), temporary_file
-
-
-def create_rooms():
-    users = User.objects.filter(is_superuser=False, groups__name=HOSTS_GROUP_NAME)
-    descriptions = (
-        'Lorem fistrum amatomaa a wan a wan fistro por la gloria de mi madre. Jarl por la gloria de mi madre torpedo te va a hasé pupitaa va usté muy cargadoo a wan ese hombree ese hombree no te digo trigo por no llamarte Rodrigor benemeritaar. Te voy a borrar el cerito está la cosa muy malar quietooor llevame al sircoo al ataquerl pupita papaar papaar jarl ese que llega. No puedor qué dise usteer papaar papaar mamaar. Te voy a borrar el cerito diodenoo amatomaa por la gloria de mi madre a gramenawer a wan apetecan. Ese pedazo de a gramenawer pupita benemeritaar torpedo se calle ustée de la pradera ahorarr jarl. Mamaar al ataquerl diodeno está la cosa muy malar torpedo. Apetecan te voy a borrar el cerito ese que llega sexuarl jarl no puedor apetecan apetecan.',
-        'Lorem fistrum ahorarr condemor sexuarl pecador. Llevame al sircoo no te digo trigo por no llamarte Rodrigor benemeritaar caballo blanco caballo negroorl diodenoo llevame al sircoo ahorarr jarl apetecan a wan la caidita. Diodenoo a wan ese hombree se calle ustée ese hombree está la cosa muy malar a wan. La caidita a gramenawer benemeritaar ese que llega pecador fistro ahorarr se calle ustée está la cosa muy malar por la gloria de mi madre torpedo. Está la cosa muy malar ahorarr ese pedazo de la caidita.\nBenemeritaar pupita a gramenawer al ataquerl. Hasta luego Lucas de la pradera sexuarl me cago en tus muelas va usté muy cargadoo está la cosa muy malar a peich sexuarl pupita ahorarr. Hasta luego Lucas ese pedazo de está la cosa muy malar fistro te voy a borrar el cerito pupita tiene musho peligro ese que llega hasta luego Lucas apetecan caballo blanco caballo negroorl. Está la cosa muy malar se calle ustée benemeritaar diodenoo no te digo trigo por no llamarte Rodrigor por la gloria de mi madre por la gloria de mi madre a peich fistro jarl por la gloria de mi madre. Ese hombree ese que llega torpedo caballo blanco caballo negroorl está la cosa muy malar qué dise usteer diodeno al ataquerl. Pecador mamaar no te digo trigo por no llamarte Rodrigor qué dise usteer sexuarl a wan a gramenawer. Al ataquerl pecador la caidita se calle ustée llevame al sircoo torpedo qué dise usteer condemor apetecan la caidita. Fistro a peich diodenoo te va a hasé pupitaa pecador papaar papaar ese que llega mamaar. Condemor ese que llega se calle ustée al ataquerl mamaar a peich.',
-        'Lorem fistrum pecador de la pradera ese pedazo de hasta luego Lucas a wan pupita ese pedazo de. Torpedo condemor hasta luego Lucas papaar papaar diodenoo a peich diodeno mamaar ese pedazo de la caidita. La caidita pecador a wan me cago en tus muelas pecador papaar papaar hasta luego Lucas. Está la cosa muy malar caballo blanco caballo negroorl amatomaa se calle ustée llevame al sircoo de la pradera está la cosa muy malar torpedo por la gloria de mi madre a peich. Caballo blanco caballo negroorl de la pradera por la gloria de mi madre te va a hasé pupitaa quietooor pupita qué dise usteer diodenoo. Al ataquerl está la cosa muy malar me cago en tus muelas a wan pupita pupita te va a hasé pupitaa. A wan pupita ese que llega me cago en tus muelas a peich llevame al sircoo la caidita benemeritaar llevame al sircoo pupita. Amatomaa no puedor caballo blanco caballo negroorl condemor quietooor está la cosa muy malar. No puedor papaar papaar la caidita sexuarl ese hombree.\nHasta luego Lucas diodenoo apetecan pecador te va a hasé pupitaa no puedor se calle ustée amatomaa va usté muy cargadoo. A peich ese que llega amatomaa a peich ahorarr la caidita ahorarr. Ese hombree apetecan condemor quietooor a wan. Va usté muy cargadoo de la pradera papaar papaar no puedor a peich caballo blanco caballo negroorl diodeno a peich papaar papaar quietooor. Por la gloria de mi madre benemeritaar va usté muy cargadoo está la cosa muy malar a peich sexuarl no te digo trigo por no llamarte Rodrigor fistro no te digo trigo por no llamarte Rodrigor sexuarl. Ese hombree la caidita amatomaa apetecan ese pedazo de papaar papaar a wan la caidita.\nBenemeritaar por la gloria de mi madre no puedor fistro. A gramenawer diodeno te va a hasé pupitaa ese pedazo de. Mamaar papaar papaar pecador ese hombree ahorarr sexuarl a wan mamaar. Pupita quietooor ese hombree hasta luego Lucas hasta luego Lucas ese que llega ese hombree te va a hasé pupitaa la caidita ahorarr jarl. Se calle ustée a peich va usté muy cargadoo no puedor a peich no te digo trigo por no llamarte Rodrigor qué dise usteer te va a hasé pupitaa se calle ustée por la gloria de mi madre. Se calle ustée ahorarr amatomaa mamaar no puedor ahorarr ahorarr te va a hasé pupitaa. Apetecan pecador de la pradera diodeno a wan a gramenawer al ataquerl.',
-    )
+def create_rooms(size=0):
+    hosts = User.objects.filter(is_superuser=False, groups__name=HOSTS_GROUP_NAME)
     room_amenities = RoomAmenity.objects.all()
-    for room_number in range(ROOM_SET_SIZE):
-        print('Creating room {0} of {1}'.format(room_number + 1, ROOM_SET_SIZE))
-        description = descriptions[randint(0, len(descriptions) - 1)]
+    for room_number in range(size):
+        print('Creating room {0} of {1}'.format(room_number + 1, size))
+        description = requests.get('http://loripsum.net/api/plaintext').text
         words = description.split(' ')
         long = randint(3, 5)
         name = ' '.join(words[randint(0, len(words) - long):][:long]) \
-                   .replace('.', '').replace('\n', ' ').capitalize() + ' ' + get_random_string(length=8) + '.'
-        name.replace('..', '.')
+            .replace(',', '').replace(';', '').replace(':', '').replace('-', '').replace('.', '').replace('\n', ' ') \
+            .capitalize()
         amenities_set = []
         for i in range(randint(0, len(room_amenities))):
             if room_amenities[i] not in amenities_set:
                 amenities_set.append(room_amenities[i])
         random_date = timezone.now() + timedelta(days=randint(-30, 90))
         room_created = Room(
-            host=users[randint(0, len(users) - 1)],
+            host=hosts[randint(0, len(hosts) - 1)],
             name=name,
             description=description,
             accommodates=randint(1, 4),
@@ -79,7 +78,7 @@ def create_rooms():
             available_since=random_date,
             available_to=random_date + timedelta(days=randint(7, 120))
         )
-        file_name, file = download_image_file(MEDIA_URL)
+        file_name, file = download_image_file(ROOM_MEDIA_URL)
         room_created.main_photo.save(file_name, files.File(file))
         room_created.amenities = amenities_set
         room_created.save()
@@ -90,15 +89,22 @@ class Command(BaseCommand):
         call_command('config_project')
 
         create_users((
-            ('Sheldon Cooper', GUESTS_GROUP_NAME),
-            ('Penny Penny Penny', HOSTS_GROUP_NAME),
-            ('Leonard Hofstadter', GUESTS_GROUP_NAME),
-            ('Howard Wolowitz', GUESTS_GROUP_NAME),
-            ('Raj Koothrappali', GUESTS_GROUP_NAME),
-            ('Amy Farrah Fowler', HOSTS_GROUP_NAME),
+            ('Sheldon Cooper', GUESTS_GROUP_NAME,
+             'http://javiercantera.com/wp-content/uploads/2015/02/tumblr_static_dc056b4f8c9493f3c64e6e0a85382b31.jpg'),
+            ('Penny Penny Penny', HOSTS_GROUP_NAME,
+             'http://www.tentacionesdemujer.com/wordpress/wp-content/uploads/2015/01/FACE.jpg'),
+            ('Leonard Hofstadter', GUESTS_GROUP_NAME,
+             'https://pbs.twimg.com/profile_images/2654852680/87ee5ed912ea7364a29a380be9b22285.jpeg'),
+            ('Howard Wolowitz', GUESTS_GROUP_NAME,
+             'http://vignette2.wikia.nocookie.net/bigbangtheory/images/6/6a/Howardwolowitz.jpg'),
+            ('Raj Koothrappali', GUESTS_GROUP_NAME,
+             'http://vaais.com/Files/images/personajes/216.jpg'),
+            ('Amy Farrah Fowler', HOSTS_GROUP_NAME,
+             'http://gorabbit.ru/upload/iblock/fd0/fd059a0ec3f3cd284592312e1b1706af.jpg'),
         ))
 
         create_room_amenities(
-            ('Internet', 'Kitchen', 'TV', 'Heating', 'Air conditioning', 'Washer', 'Pets allowed',))
+            ('Internet', 'Kitchen', 'TV', 'Heating', 'Air conditioning', 'Washer', 'Pets allowed',)
+        )
 
-        create_rooms()
+        create_rooms(ROOM_SET_SIZE)

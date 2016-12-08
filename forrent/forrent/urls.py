@@ -26,7 +26,7 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
 
-    url(r'^', include(users_urls)),
+    url(r'^user/', include(users_urls)),
 
     url(r'^room/', include(rooms_urls)),
 

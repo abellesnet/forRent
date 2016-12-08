@@ -6,21 +6,106 @@
 
     <div class="container">
 
-        <form class="signup" action method="post" enctype="multipart/form-data">
+        <form class="room-form" method="post" enctype="multipart/form-data">
 
             {% csrf_token %}
 
-            {{ form.as_p }}
+            <div class="row">
+                {{ form.non_field_errors }}
+            </div>
 
-            <button type="submit" class="form-button btn btn-primary">
-                {% trans "Save" %}
-            </button>
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+            </div>
 
-            {% if form.instance.pk %}
-                <a href="{{ form.instance.get_absolute_url }}">
-                    {% trans "Cancel" %}
-                </a>
-            {% endif %}
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    {{ form.main_photo.label_tag }}
+                    {{ form.main_photo }}
+                    {{ form.main_photo.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-4">
+                    {{ form.accommodates.label_tag }}
+                    {{ form.accommodates }}
+                    {{ form.accommodates.errors }}
+                </div>
+                <div class="form-group col-xs-4">
+                    {{ form.beds.label_tag }}
+                    {{ form.beds }}
+                    {{ form.beds.errors }}
+                </div>
+                <div class="bathroom form-group col-xs-4 text-center">
+                    {{ form.private_bathroom }}
+                    {{ form.private_bathroom.label }}
+                    {{ form.private_bathroom.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    {{ form.amenity_set.label_tag }}
+                    {{ form.amenity_set }}
+                    {{ form.amenity_set.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-4">
+                    {{ form.price_per_day.label_tag }}
+                    {{ form.price_per_day }}
+                    {{ form.price_per_day.errors }}
+                </div>
+                <div class="form-group col-xs-12 col-sm-4">
+                    {{ form.available_since.label_tag }}
+                    <input id="id_available_since" name="available_since" type="date" required=""
+                           value="{{ form.available_since.value|date:"c" }}">
+                    {{ form.available_since.errors }}
+                </div>
+                <div class="form-group col-xs-12 col-sm-4">
+                    {{ form.available_to.label_tag }}
+                    <input id="id_available_to" name="available_to" type="date" required=""
+                           value="{{ form.available_to.value|date:"c" }}">
+                    {{ form.available_to.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button type="submit" class="host-button form-button btn btn-primary">
+                        <span class="glyphicon glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                        {% trans "Save" %}
+                    </button>
+
+                    {% if object %}
+                        <a class="host-button btn btn-default" role="button" href="{{ object.get_absolute_url }}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            {% trans "Cancel" %}
+                        </a>
+                    {% else %}
+                        <a class="host-button btn btn-default" role="button" href="{% url 'home' %}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            {% trans "Cancel" %}
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
 
         </form>
 
