@@ -26,7 +26,7 @@ class RoomAmenity(Model):
         return self.name
 
 
-ROOM_IMAGE_ROOT = 'post/image/'
+ROOM_IMAGE_ROOT = 'room/image/'
 
 
 def random_filename(instance, filename):
@@ -54,9 +54,6 @@ class Room(Model):
     main_photo = ThumbnailerImageField(resize_source=DEFAULT_IMAGE_OPTIONS, upload_to=random_filename)
     created_at = DateTimeField(auto_now_add=True)
     modified_at = DateTimeField(auto_now=True)
-
-    class Meta:
-        unique_together = ('host', 'name',)
 
     def __str__(self):
         return '{0} ({1})'.format(self.name, self.host.get_full_name())

@@ -12,19 +12,22 @@
 
     {% include "includes/pagination.html"  with page_obj=page_obj %}
 
+
     <div class="container">
 
-        {% for room in object_list %}
+        <section class="row">
 
-            <h4>
-                <a href="{{ room.get_absolute_url }}">{{ room }}</a>
-            </h4>
+            {% for room in object_list %}
 
-        {% empty %}
-            <p>
-                {% trans "No rooms yet." %}
-            </p>
-        {% endfor %}
+                {% include "includes/room_in_list.html"  with room=room %}
+
+            {% empty %}
+                <p>
+                    {% trans "No rooms yet." %}
+                </p>
+            {% endfor %}
+
+        </section>
 
     </div>
 

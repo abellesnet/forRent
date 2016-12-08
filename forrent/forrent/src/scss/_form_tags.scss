@@ -1,0 +1,30 @@
+form {
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  input:not([type='checkbox']),
+  textarea,
+  select {
+    @extend .form-control;
+  }
+
+  .text-info {
+    margin-bottom: 0 !important;
+  }
+
+  .errorlist {
+    @extend .list-group;
+
+    li {
+      @extend .list-group-item, .list-group-item-danger;
+    }
+
+  }
+
+  .form-button {
+    width: 120px;
+  }
+
+}
+
+

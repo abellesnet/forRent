@@ -1,0 +1,42 @@
+
+.room-detail {
+
+  font-size: 14px;
+
+  .main-photo {
+    width: 100%;
+    max-height: 629px;
+  }
+
+  .room-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .host-photo {
+    height: 50px;
+    width: auto;
+    border-radius: 50%;
+  }
+
+  .rating, .host {
+    padding-left: 0px;
+  }
+
+  .detail-icon {
+    height: 30px;
+    width: auto;
+  }
+
+  .price {
+    font-weight: bold;
+  }
+
+}
+
+.host-button {
+  width: 120px;
+}
+

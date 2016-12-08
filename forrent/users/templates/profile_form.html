@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <div class="container">
+
+        <form class="profile-form" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="row">
+                <h1>{{ object.user.get_full_name }}</h1>
+            </div>
+
+            <div class="row">
+                {{ form.non_field_errors }}
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    {% include "includes/form_field.html" with field=form.photo %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button type="submit" class="form-button btn btn-primary">
+                        <span class="glyphicon glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                        {% trans "Save" %}
+                    </button>
+
+                    {% if object %}
+                        <a class="host-button btn btn-default" role="button" href="{{ object.get_absolute_url }}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            {% trans "Cancel" %}
+                        </a>
+                    {% else %}
+                        <a class="host-button btn btn-default" role="button" href="{% url 'home' %}">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            {% trans "Cancel" %}
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+{% endblock %}

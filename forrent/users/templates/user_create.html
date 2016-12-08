@@ -10,11 +10,57 @@
 
             {% csrf_token %}
 
-            {{ form.as_p }}
+            <div class="row">
+                {{ form.non_field_errors }}
+            </div>
 
-            <button type="submit" class="form-button btn btn-primary">
-                {% trans "Register" %}
-            </button>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-6">
+                    {% include "includes/form_field.html" with field=form.username %}
+                </div>
+                <div class="form-group col-xs-12 col-sm-6">
+                    {% include "includes/form_field.html" with field=form.email %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-5">
+                    {% include "includes/form_field.html" with field=form.first_name %}
+                </div>
+                <div class="form-group col-xs-12 col-sm-7">
+                    {% include "includes/form_field.html" with field=form.last_name %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-5">
+                    {% include "includes/form_field.html" with field=form.groups %}
+                </div>
+                <div class="col-xs-12 col-sm-7">
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            {% include "includes/form_field.html" with field=form.password1 %}
+                        </div>
+                        <div class="form-group col-xs-12">
+                            {% include "includes/form_field.html" with field=form.password2 %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button type="submit" class="form-button btn btn-primary">
+                        <span class="glyphicon glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        {% trans "Register" %}
+                    </button>
+
+                    <a class="form-button btn btn-default" role="button" href="{% url 'home' %}">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        {% trans "Cancel" %}
+                    </a>
+                </div>
+            </div>
 
         </form>
 
