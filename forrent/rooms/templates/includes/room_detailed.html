@@ -22,14 +22,26 @@
     <div class="container">
 
         <div class="row">
-            <span class="room-name col-xs-12 text-justify">{{ room.name }}</span>
+            <h1 class="room-name col-xs-12 text-justify">{{ room.name }}</h1>
         </div>
 
         <div class="row">
-            <img class="host-photo col-xs-4" src="{% static "img/no-photo.png" %}">
+            <a href="{{ room.host.profile.get_absolute_url }}">
+                {% if room.host.profile.photo %}
+                    <img class="host-photo col-xs-4"
+                         src="/media/{{ room.host.profile.photo }}"
+                         alt="{% trans "Profile photo" %}">
+                {% else %}
+                    <img class="host-photo col-xs-4"
+                         src="{% static "img/no-photo.png" %}"
+                         alt="{% trans "Profile photo" %}">
+                {% endif %}
+            </a>
             <div class="col-xs-8">
                 <div class="row">
-                    <div class="host col-xs-12">{{ room.host.get_full_name }}</div>
+                    <div class="host col-xs-12">
+                        <a href="{{ room.host.profile.get_absolute_url }}">{{ room.host.get_full_name }}</a>
+                    </div>
                     {#                    <div class="rating col-xs-12">rating</div>#}
                 </div>
             </div>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% include "includes/profile_detailed.html"  with profile=object %}
+
+    {% include "includes/owner_buttons.html"  with profile=object %}
+
+{% endblock %}

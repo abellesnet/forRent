@@ -1,0 +1,29 @@
+{% load i18n %}
+
+{% load static %}
+
+<div class="profile-detail">
+
+    <div class="container">
+
+        <div class="media">
+            <div class="media-left">
+                {% if profile.photo %}
+                    <img class="profile-photo media-object"
+                         src="/media/{{ profile.photo }}"
+                         alt="{% trans "Profile photo" %}">
+                {% else %}
+                    <img class="profile-photo media-object"
+                         src="{% static "img/no-photo.png" %}"
+                         alt="{% trans "Profile photo" %}">
+                {% endif %}
+            </div>
+            <div class="media-body">
+                <h1 class="media-heading">{{ profile.user.get_full_name }}</h1>
+                <h3>{{ profile.user.groups.all.first}}</h3>
+            </div>
+        </div>
+
+    </div>
+
+</div>
