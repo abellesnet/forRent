@@ -10,6 +10,7 @@ from django.db.models import ManyToManyField
 from django.db.models import Model
 from django.urls import reverse
 from django.utils.crypto import get_random_string
+from django.utils.timezone import now
 from easy_thumbnails.fields import ThumbnailerImageField
 
 from rooms.lib import generate_responsive_room_main_photo_images
@@ -77,3 +78,23 @@ class Room(Model):
             return None
         name, extension = os.path.splitext(self.main_photo.name)
         return extension
+
+    def get_start_date(self):
+        return max(self.available_since, now().date())
+
+    def get_end_date(self):
+        return self.available_to
+
+    def get_dates_unavailable(self):
+        dates_unavailable = ['2017-03-15']
+        return "[{0}]".format(','.join(dates_unavailable))
+
+
+class RoomBooking(Model):
+    room = ForeignKey(Room)
+    guest = ForeignKey(User)
+    since = DateField()
+    to = DateField()
+    total_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
+    created_at = DateTimeField(auto_now_add=True)
+    modified_at = DateTimeField(auto_now=True)
