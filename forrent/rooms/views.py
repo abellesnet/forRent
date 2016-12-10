@@ -74,3 +74,15 @@ class RoomBookingListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return RoomBooking.objects.filter(guest=self.request.user).order_by('-since').select_related('room', 'guest', )
+
+
+class RoomBookingDeleteView(PermissionRequiredMixin, DeleteView):
+    model = RoomBooking
+    template_name = 'roombooking_delete.html'
+    success_url = reverse_lazy('roombooking_list')
+
+    def has_permission(self):
+        roombooking = RoomBooking.objects.filter(pk=self.kwargs.get('pk')).first()
+        if roombooking and roombooking.guest == self.request.user:
+            return True
+        return False
