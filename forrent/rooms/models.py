@@ -98,3 +98,6 @@ class RoomBooking(Model):
     total_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     created_at = DateTimeField(auto_now_add=True)
     modified_at = DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.room)

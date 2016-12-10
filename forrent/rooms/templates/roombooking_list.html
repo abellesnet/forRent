@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="text-center">
+            {% trans "My bookings" %}
+        </h1>
+    </div>
+
+    {% include "includes/pagination.html"  with page_obj=page_obj %}
+
+
+    <div class="container">
+
+        <section class="row">
+
+            {% for booking in object_list %}
+
+                <h4>{{ booking.room }}</h4>
+                <h5>{{ booking.since }} - {{ booking.to }}</h5>
+                <h5>{{ booking.total_price }} €</h5>
+
+                <hr>
+
+            {% empty %}
+                <p>
+                    {% trans "No bookings yet." %}
+                </p>
+            {% endfor %}
+
+        </section>
+
+    </div>
+
+
+{% endblock %}

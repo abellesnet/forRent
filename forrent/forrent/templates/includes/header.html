@@ -21,7 +21,7 @@
                 {#                            </ul>#}
                 {% if perms.rooms %}
                     <ul class="nav navbar-nav">
-                        {% if user.is_authenticated %}
+                        {% if perms.rooms.add_room %}
                             <li><a href="{% url 'myrooms_list' %}">
                                 {% trans "My rooms" %}
                             </a></li>
@@ -29,6 +29,11 @@
                         {% if perms.rooms.add_room %}
                             <li><a href="{% url 'room_create' %}">
                                 {% trans "Create room" %}
+                            </a></li>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'roombooking_list' %}">
+                                {% trans "My bookings" %}
                             </a></li>
                         {% endif %}
                     </ul>
