@@ -34,6 +34,58 @@
     font-weight: bold;
   }
 
+  .availability {
+
+    .row {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+
+    .datepicker-inline {
+      @extend .col-xs-12, .col-sm-offset-2, .col-sm-8, .col-md-offset-0, .col-md-12;
+      table {
+        @extend .col-xs-12, .col-sm-offset-2, .col-sm-8, .col-md-offset-0, .col-md-12;
+      }
+    }
+
+    form {
+
+      padding-top: 0;
+      padding-bottom: 0;
+
+      .row {
+        padding-bottom: 0;
+      }
+
+      .range div {
+        @extend .col-xs-12, .col-sm-6, .col-md-offset-0, .col-md-12;
+        //display: inline-block;
+        div {
+          padding-left: 0;
+          padding-right: 0;
+          padding-bottom: 20px;
+        }
+      }
+
+      .row.booking-data {
+        padding-top: 0;
+      }
+
+      .row.errorlist {
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      ul.errorlist {
+        padding-left: 15px;
+        margin-bottom: 0;
+      }
+
+    }
+
+  }
+
 }
 
 .host-button {
