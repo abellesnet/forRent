@@ -1,5 +1,6 @@
 import glob
 import os
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -39,6 +40,11 @@ def remove_photos(filename):
     pattern = '{}{}'.format(os.path.join(settings.MEDIA_ROOT, filename), '*')
     for file in glob.glob(pattern):
         os.remove(file)
+
+
+def daterange(start_date, end_date):
+    for n in range(int((end_date - start_date).days)):
+        yield start_date + timedelta(n)
 
 
 class Room(Model):
@@ -86,8 +92,13 @@ class Room(Model):
         return self.available_to
 
     def get_dates_unavailable(self):
-        dates_unavailable = ['2017-03-15']
-        return "[{0}]".format(','.join(dates_unavailable))
+        # dates_unavailable = '["2017-03-15","2017-03-16"]'
+        bookings = RoomBooking.objects.filter(room=self, to__gte=self.get_start_date())
+        dates_unavailable = []
+        for booking in bookings:
+            for single_date in daterange(booking.since, booking.to):
+                dates_unavailable.append('"{0}"'.format(single_date.isoformat()))
+        return '[{0}]'.format(','.join(dates_unavailable))
 
 
 class RoomBooking(Model):

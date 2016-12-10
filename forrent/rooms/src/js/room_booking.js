@@ -59,7 +59,7 @@ var RoomBookingForm = {
             room: this.getRoomPk(),
             since: this.since,
             to: this.to,
-            total_price: this.getPrice() * this.getDays()
+            total_price: (this.getPrice() * this.getDays()).toFixed(2)
         };
     },
 
