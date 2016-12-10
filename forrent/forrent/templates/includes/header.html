@@ -19,25 +19,25 @@
                 {#                            <ul class="nav navbar-nav">#}
                 {#                                <li><a href="#">Anonimous</a></li>#}
                 {#                            </ul>#}
-                {% if perms.rooms %}
-                    <ul class="nav navbar-nav">
-                        {% if perms.rooms.add_room %}
-                            <li><a href="{% url 'myrooms_list' %}">
-                                {% trans "My rooms" %}
-                            </a></li>
-                        {% endif %}
+                <ul class="nav navbar-nav">
+                    {% if perms.rooms %}
                         {% if perms.rooms.add_room %}
                             <li><a href="{% url 'room_create' %}">
                                 {% trans "Create room" %}
                             </a></li>
                         {% endif %}
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'roombooking_list' %}">
-                                {% trans "My bookings" %}
+                        {% if perms.rooms.add_room %}
+                            <li><a href="{% url 'myrooms_list' %}">
+                                {% trans "My rooms" %}
                             </a></li>
                         {% endif %}
-                    </ul>
-                {% endif %}
+                    {% endif %}
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'roombooking_list' %}">
+                            {% trans "My bookings" %}
+                        </a></li>
+                    {% endif %}
+                </ul>
             </div>
             <div class="navbar-right">
                 {% if user.is_authenticated %}

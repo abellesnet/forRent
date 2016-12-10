@@ -19,10 +19,14 @@
 
             {% for booking in object_list %}
 
+                <hr>
+
                 <article class="row">
 
                     <div class="col-xs-12 col-md-10">
-                        <h4>{{ booking.room }}</h4>
+                        <a href="{% url 'room_detail' pk=booking.room.pk %}">
+                            <h4>{{ booking.room }}</h4>
+                        </a>
                         <h5>{{ booking.since }} - {{ booking.to }}</h5>
                         <h5>{{ booking.total_price }} €</h5>
                     </div>
@@ -36,8 +40,6 @@
                     </div>
 
                 </article>
-
-                <hr>
 
             {% empty %}
                 <p>

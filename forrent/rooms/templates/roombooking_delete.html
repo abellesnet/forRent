@@ -35,7 +35,9 @@
 
         <article class="row">
             <div class="col-xs-12">
-                <h4>{{ object.room }}</h4>
+                <a href="{% url 'room_detail' pk=object.room.pk %}">
+                    <h4>{{ object.room }}</h4>
+                </a>
                 <h5>{{ object.since }} - {{ object.to }}</h5>
                 <h5>{{ object.total_price }} €</h5>
             </div>
