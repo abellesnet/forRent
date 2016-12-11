@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 # deploy a new release on Amazon ECS
 
+# IMPORTANT:
+# This is a "how to" script that uses "abelles" production envinonment (Docker repos and AWS)
+# If you want to deploy this app, you must write your own scripts
+
 # usage:
 # ./deploy_aws.sh tag
+# example:
+# ./deploy_aws.sh 1.0
 
 if [ -z "$1" ]
 then

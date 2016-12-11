@@ -1,18 +1,16 @@
 .header, .footer {
+
   .navbar-brand.navbar-brand-image {
     padding: 0;
-
   }
 
   .navbar-brand.navbar-brand-name {
     padding-left: 20px;
-
   }
 
   .brand-image {
     max-height: 50px;
     border-radius: 100%;
-
   }
 
   .navbar-right {
@@ -22,9 +20,15 @@
 }
 
 .footer{
-  .navbar-text {
-    float: none;
 
+  .github-button{
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .github-icon {
+    height: 20px;
+    width: auto;
   }
 
 }

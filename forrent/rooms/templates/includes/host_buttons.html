@@ -2,9 +2,8 @@
 
 {% if room.host == user %}
 
-    <hr>
-
-    <div class="container-fluid">
+    <div class="container">
+        <hr>
         <div class="row">
             <p class="col-xs-12 text-center">
                 <a class="host-button btn btn-primary" role="button" href="{% url 'room_update' pk=room.pk %}">
@@ -17,6 +16,7 @@
                 </a>
             </p>
         </div>
+        <hr>
     </div>
 
 {% endif %}

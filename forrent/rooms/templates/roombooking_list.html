@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="text-center">
+            {% trans "My bookings" %}
+        </h1>
+    </div>
+
+    {% include "includes/pagination.html"  with page_obj=page_obj %}
+
+
+    <div class="container">
+
+        <section>
+
+            {% for booking in object_list %}
+
+                <hr>
+
+                <article class="row">
+
+                    <div class="col-xs-12 col-md-10">
+                        <a href="{% url 'room_detail' pk=booking.room.pk %}">
+                            <h4>{{ booking.room }}</h4>
+                        </a>
+                        <h5>{{ booking.since }} - {{ booking.to }}</h5>
+                        <h5>{{ booking.total_price }} €</h5>
+                    </div>
+
+                    <div class="col-xs-12 col-md-2 text-right">
+                        <a class="host-button btn btn-primary" role="button"
+                           href="{% url 'roombooking_delete' pk=booking.pk %}">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            {% trans "Delete" %}
+                        </a>
+                    </div>
+
+                </article>
+
+            {% empty %}
+                <p>
+                    {% trans "No bookings yet." %}
+                </p>
+            {% endfor %}
+
+        </section>
+
+    </div>
+
+{% endblock %}

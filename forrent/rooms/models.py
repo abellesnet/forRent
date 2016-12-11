@@ -1,5 +1,6 @@
 import glob
 import os
+from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -10,6 +11,7 @@ from django.db.models import ManyToManyField
 from django.db.models import Model
 from django.urls import reverse
 from django.utils.crypto import get_random_string
+from django.utils.timezone import now
 from easy_thumbnails.fields import ThumbnailerImageField
 
 from rooms.lib import generate_responsive_room_main_photo_images
@@ -38,6 +40,11 @@ def remove_photos(filename):
     pattern = '{}{}'.format(os.path.join(settings.MEDIA_ROOT, filename), '*')
     for file in glob.glob(pattern):
         os.remove(file)
+
+
+def daterange(start_date, end_date):
+    for n in range(int((end_date - start_date).days)):
+        yield start_date + timedelta(n)
 
 
 class Room(Model):
@@ -77,3 +84,31 @@ class Room(Model):
             return None
         name, extension = os.path.splitext(self.main_photo.name)
         return extension
+
+    def get_start_date(self):
+        return max(self.available_since, now().date())
+
+    def get_end_date(self):
+        return self.available_to
+
+    def get_dates_unavailable(self):
+        # dates_unavailable = '["2017-03-15","2017-03-16"]'
+        bookings = RoomBooking.objects.filter(room=self, to__gte=self.get_start_date())
+        dates_unavailable = []
+        for booking in bookings:
+            for single_date in daterange(booking.since, booking.to):
+                dates_unavailable.append('"{0}"'.format(single_date.isoformat()))
+        return '[{0}]'.format(','.join(dates_unavailable))
+
+
+class RoomBooking(Model):
+    room = ForeignKey(Room)
+    guest = ForeignKey(User)
+    since = DateField()
+    to = DateField()
+    total_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
+    created_at = DateTimeField(auto_now_add=True)
+    modified_at = DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.room)

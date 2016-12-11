@@ -2,7 +2,9 @@
 
 {% load static %}
 
-<div class="room-detail">
+{% get_current_language as LANGUAGE_CODE %}
+
+<article class="room-detail">
 
     <div class="container-fluid">
 
@@ -22,88 +24,170 @@
     <div class="container">
 
         <div class="row">
-            <h1 class="room-name col-xs-12 text-justify">{{ room.name }}</h1>
-        </div>
 
-        <div class="row">
-            <a href="{{ room.host.profile.get_absolute_url }}">
-                {% if room.host.profile.photo %}
-                    <img class="host-photo col-xs-4"
-                         src="/media/{{ room.host.profile.photo }}"
-                         alt="{% trans "Profile photo" %}">
-                {% else %}
-                    <img class="host-photo col-xs-4"
-                         src="{% static "img/no-photo.png" %}"
-                         alt="{% trans "Profile photo" %}">
-                {% endif %}
-            </a>
-            <div class="col-xs-8">
-                <div class="row">
-                    <div class="host col-xs-12">
-                        <a href="{{ room.host.profile.get_absolute_url }}">{{ room.host.get_full_name }}</a>
+            <div class="col-sm-12 col-md-8">
+
+                <hr>
+
+                <h1 class="room-name text-justify">{{ room.name }}</h1>
+
+                <section class="row">
+                    <a href="{{ room.host.profile.get_absolute_url }}">
+                        {% if room.host.profile.photo %}
+                            <img class="host-photo col-xs-4"
+                                 src="/media/{{ room.host.profile.photo }}"
+                                 alt="{% trans "Profile photo" %}">
+                        {% else %}
+                            <img class="host-photo col-xs-4"
+                                 src="{% static "img/no-photo.png" %}"
+                                 alt="{% trans "Profile photo" %}">
+                        {% endif %}
+                    </a>
+                    <div class="col-xs-8">
+                        <div class="row">
+                            <div class="host col-xs-12">
+                                <a href="{{ room.host.profile.get_absolute_url }}">{{ room.host.get_full_name }}</a>
+                            </div>
+                            {#                    <div class="rating col-xs-12">rating</div>#}
+                        </div>
                     </div>
-                    {#                    <div class="rating col-xs-12">rating</div>#}
-                </div>
-            </div>
-        </div>
+                </section>
 
+                <hr>
 
-        <hr>
+                <section>
+                    <div class="row">
+                        <div class="col-xs-4 text-center">
+                            <img class="detail-icon" src="{% static "img/accommodates.png" %}">
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <img class="detail-icon" src="{% static "img/beds.png" %}">
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            {% if room.private_bathroom %}
+                                <img class="detail-icon" src="{% static "img/bathroom.png" %}">
+                            {% endif %}
+                        </div>
+                    </div>
 
-        <div class="row">
-            <div class="col-xs-4 text-center">
-                <img class="detail-icon" src="{% static "img/accommodates.png" %}">
-            </div>
-            <div class="col-xs-4 text-center">
-                <img class="detail-icon" src="{% static "img/beds.png" %}">
-            </div>
-            <div class="col-xs-4 text-center">
-                {% if room.private_bathroom %}
-                    <img class="detail-icon" src="{% static "img/bathroom.png" %}">
-                {% endif %}
-            </div>
-        </div>
+                    <div class="row">
+                        <div class="col-xs-4 text-center">
+                            <span>{{ room.accommodates }} {% trans "Guests" %}</span>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <span>{{ room.beds }} {% trans "Beds" %}</span>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            {% if room.private_bathroom %}
+                                <span>{% trans "Private bathroom" %}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </section>
 
-        <div class="row">
-            <div class="col-xs-4 text-center">
-                <span>{{ room.accommodates }} {% trans "Guests" %}</span>
-            </div>
-            <div class="col-xs-4 text-center">
-                <span>{{ room.beds }} {% trans "Beds" %}</span>
-            </div>
-            <div class="col-xs-4 text-center">
-                {% if room.private_bathroom %}
-                    <span>{% trans "Private bathroom" %}</span>
-                {% endif %}
-            </div>
-        </div>
+                {% if room.amenity_set.all.count > 0 %}
 
-        {% if room.amenity_set.all.count > 0 %}
+                    <hr>
 
-            <hr>
-
-            <div class="row">
+                    <section class="row">
                     <span class="col-xs-12">
                         {{ room.amenity_set.all|join:", " }}.
                     </span>
+                    </section>
+
+                {% endif %}
+
+                <hr>
+
+                <section class="row">
+                    <span class="price col-xs-12">{{ room.price_per_day }}€ {% trans "per day" %}</span>
+                </section>
+
+                <hr>
+
+                <section class="row">
+                    <p class="col-xs-12 text-justify">
+                        {{ room.description }}
+                    </p>
+                </section>
+
             </div>
 
-        {% endif %}
+            <div class="col-sm-12 col-md-4">
+                <aside class="availability">
+                    <hr>
+                    <h4 class="text-center">{% trans "Availability" %}</h4>
+                    {% if not user.is_authenticated or room.host == user %}
+                        <div class="row">
+                            <div data-provide="datepicker-inline"
+                                 data-date-language="{{ LANGUAGE_CODE }}"
+                                 data-date-format="yyyy-mm-dd"
+                                 data-date-start-date="{{ room.get_start_date | date:"c" }}"
+                                 data-date-end-date="{{ room.get_end_date | date:"c" }}"
+                                 data-date-dates-disabled="{{ room.get_dates_unavailable }}"
+                            ></div>
+                        </div>
+                        {% if not user.is_authenticated %}
+                            <div class="row">
+                                <a href="{% url 'login' %}">
+                                    <h4 class="col-xs-12 text-center">
+                                        {% trans "You must be authenticated to make a reservation" %}
+                                    </h4>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <form class="booking-form" novalidate>
+                            <div class="row">
+                                {% language 'en' %}
+                                    <div class="range"
+                                         data-date-language="{{ LANGUAGE_CODE }}"
+                                         data-date-format="yyyy-mm-dd"
+                                         data-date-start-date="{{ room.get_start_date | date:"c" }}"
+                                         data-date-end-date="{{ room.get_end_date | date:"c" }}"
+                                         data-date-dates-disabled="{{ room.get_dates_unavailable }}"
+                                         data-room-pk="{{ room.pk }}"
+                                         data-price="{{ room.price_per_day|floatformat:2 }}"
+                                         data-api="{% url 'roombooking-list' %}"
+                                    >
+                                {% endlanguage %}
+                                <div class="range-start" id="datepicker1"></div>
+                                <div class="range-end" id="datepicker2"></div>
+                                </div>
+                            </div>
+                            <div class="row booking-data">
+                                <h4 class="col-xs-6 text-right">{% trans "Since" %}:</h4>
+                                <h4 class="col-xs-6" id="since"></h4>
+                            </div>
+                            <div class="row booking-data">
+                                <h4 class="col-xs-6 text-right">{% trans "To" %}:</h4>
+                                <h4 class="col-xs-6" id="to"></h4>
+                            </div>
+                            <div class="row booking-data">
+                                <h4 class="col-xs-6 text-right">{% trans "Days" %}:</h4>
+                                <h4 class="col-xs-6" id="days"></h4>
+                            </div>
+                            <div class="row booking-data">
+                                <h4 class="col-xs-6 text-right">{% trans "Price" %}:</h4>
+                                <h4 class="col-xs-6" id="price"></h4>
+                            </div>
+                            <div class="row errorlist">
+                                <ul class="errorlist col-xs-12"></ul>
+                            </div>
+                            <div class="row">
+                                <p class="col-xs-12 text-center">
+                                    <button type="submit" class="btn btn-success" id="submit_button">
+                                        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                                        {% trans "Book" %}
+                                    </button>
+                                </p>
+                            </div>
+                        </form>
+                    {% endif %}
+                </aside>
+            </div>
 
-        <hr>
-
-        <div class="row">
-            <span class="price col-xs-12">{{ room.price_per_day }}€ {% trans "per day" %}</span>
         </div>
-
-        <hr>
-
-        <div class="row">
-            <p class="col-xs-12 text-justify">
-                {{ room.description }}
-            </p>
-        </div>
-
     </div>
 
-</div>
+</article>
