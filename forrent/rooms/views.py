@@ -8,7 +8,7 @@ from django.views.generic import ListView
 from django.views.generic import UpdateView
 
 from rooms.forms import CreateRoomForm, UpdateRoomForm
-from rooms.models import Room
+from rooms.models import Room, RoomBooking
 
 
 class MyRoomsListView(LoginRequiredMixin, ListView):
@@ -66,3 +66,23 @@ class RoomListView(ListView):
     def get_queryset(self):
         return Room.objects.filter(available_to__gt=now()).order_by('-available_since') \
             .select_related('host').prefetch_related('amenity_set')
+
+
+class RoomBookingListView(LoginRequiredMixin, ListView):
+    template_name = 'roombooking_list.html'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return RoomBooking.objects.filter(guest=self.request.user).order_by('-since').select_related('room', 'guest', )
+
+
+class RoomBookingDeleteView(PermissionRequiredMixin, DeleteView):
+    model = RoomBooking
+    template_name = 'roombooking_delete.html'
+    success_url = reverse_lazy('roombooking_list')
+
+    def has_permission(self):
+        roombooking = RoomBooking.objects.filter(pk=self.kwargs.get('pk')).first()
+        if roombooking and roombooking.guest == self.request.user:
+            return True
+        return False
