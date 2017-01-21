@@ -111,18 +111,22 @@
                     </p>
                 </section>
 
-                <hr>
+                {% if user in room.get_past_guests %}
 
-                <section class="row">
-                    <p class="col-xs-12 text-justify">
-                        {% trans "Rate this room:" %}
-                        {% for i in "12345" %}
-                            <span class="glyphicon glyphicon-star-empty rating-star" aria-hidden="true"
-                                  id="star{{ i }}">
+                    <hr>
+
+                    <section class="row">
+                        <p class="col-xs-12 text-justify">
+                            {% trans "Rate this room:" %}
+                            {% for i in "12345" %}
+                                <span class="glyphicon glyphicon-star-empty rating-star" aria-hidden="true"
+                                      id="star{{ i }}">
                             </span>
-                        {% endfor %}
-                    </p>
-                </section>
+                            {% endfor %}
+                        </p>
+                    </section>
+
+                {% endif %}
 
             </div>
 

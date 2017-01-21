@@ -100,6 +100,10 @@ class Room(Model):
                 dates_unavailable.append('"{0}"'.format(single_date.isoformat()))
         return '[{0}]'.format(','.join(dates_unavailable))
 
+    def get_past_guests(self):
+        past_bookings = self.roombooking_set.filter(to__lt=now())
+        return User.objects.filter(roombooking__in=past_bookings)
+
 
 class RoomBooking(Model):
     room = ForeignKey(Room)
