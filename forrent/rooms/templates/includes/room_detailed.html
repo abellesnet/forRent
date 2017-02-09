@@ -116,12 +116,15 @@
                     <hr>
 
                     <section class="row">
-                        <p class="col-xs-12 text-justify">
+                        <p class="room-rating col-xs-12 text-justify"
+                           data-room-pk="{{ room.pk }}"
+                           data-roomrating-api="{% url 'roomrating-list' %}"
+                        >
                             {% trans "Rate this room:" %}
                             {% for i in "12345" %}
                                 <span class="glyphicon glyphicon-star-empty rating-star" aria-hidden="true"
                                       id="star{{ i }}">
-                            </span>
+                                    </span>
                             {% endfor %}
                         </p>
                     </section>
