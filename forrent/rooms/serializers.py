@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import url
 from django.urls import reverse
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from rooms.models import RoomBooking
+from rooms.models import RoomBooking, RoomRating
 
 
 class RoomBookingSerializer(ModelSerializer):
@@ -16,3 +15,9 @@ class RoomBookingSerializer(ModelSerializer):
 
     def get_url(self, obj):
         return reverse('roombooking_list')
+
+
+class RoomRatingSerializer(ModelSerializer):
+    class Meta:
+        model = RoomRating
+        fields = ('id', 'room', 'rate',)

@@ -4,9 +4,9 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import ForeignKey, CharField, TextField, BooleanField, DecimalField, DateField, IntegerField, \
-    DateTimeField
+    DateTimeField, Avg
 from django.db.models import ManyToManyField
 from django.db.models import Model
 from django.urls import reverse
@@ -100,6 +100,13 @@ class Room(Model):
                 dates_unavailable.append('"{0}"'.format(single_date.isoformat()))
         return '[{0}]'.format(','.join(dates_unavailable))
 
+    def get_past_guests(self):
+        past_bookings = self.roombooking_set.filter(to__lt=now())
+        return User.objects.filter(roombooking__in=past_bookings)
+
+    def rating(self):
+        return self.roomrating_set.aggregate(Avg('rate')).get('rate__avg')
+
 
 class RoomBooking(Model):
     room = ForeignKey(Room)
@@ -109,6 +116,20 @@ class RoomBooking(Model):
     total_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     created_at = DateTimeField(auto_now_add=True)
     modified_at = DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.room)
+
+
+class RoomRating(Model):
+    room = ForeignKey(Room)
+    guest = ForeignKey(User)
+    rate = IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    created_at = DateTimeField(auto_now_add=True)
+    modified_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('room', 'guest',)
 
     def __str__(self):
         return str(self.room)

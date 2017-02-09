@@ -48,7 +48,15 @@
                             <div class="host col-xs-12">
                                 <a href="{{ room.host.profile.get_absolute_url }}">{{ room.host.get_full_name }}</a>
                             </div>
-                            {#                    <div class="rating col-xs-12">rating</div>#}
+                            <div class="rating col-xs-12">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= room.rating %}
+                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                    {% else %}
+                                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -110,6 +118,26 @@
                         {{ room.description }}
                     </p>
                 </section>
+
+                {% if user in room.get_past_guests %}
+
+                    <hr>
+
+                    <section class="row">
+                        <p class="room-rating col-xs-12 text-justify"
+                           data-room-pk="{{ room.pk }}"
+                           data-roomrating-api="{% url 'roomrating-list' %}"
+                        >
+                            {% trans "Rate this room:" %}
+                            {% for i in "12345" %}
+                                <span class="glyphicon glyphicon-star-empty rating-star" aria-hidden="true"
+                                      id="star{{ i }}">
+                                    </span>
+                            {% endfor %}
+                        </p>
+                    </section>
+
+                {% endif %}
 
             </div>
 
