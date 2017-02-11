@@ -114,7 +114,7 @@
                 <hr>
 
                 <section class="row">
-                    <p class="col-xs-12 text-justify">
+                    <p class="col-xs-12">
                         {{ room.description }}
                     </p>
                 </section>
@@ -124,7 +124,7 @@
                     <hr>
 
                     <section class="row">
-                        <p class="room-rating col-xs-12 text-justify"
+                        <p class="room-rating col-xs-12"
                            data-room-pk="{{ room.pk }}"
                            data-roomrating-api="{% url 'roomrating-list' %}"
                         >
@@ -138,6 +138,54 @@
                     </section>
 
                 {% endif %}
+
+
+                <hr>
+
+                <section class="comments"
+                         data-room-pk="{{ room.pk }}"
+                         data-roomcomments-api="{% url 'roomcomment-list' %}"
+                >
+                    <div class="comments-list">
+                        <div class="comments-container">
+
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-1">
+                                <a href="{{ user.profile.get_absolute_url }}">
+                                    {% if user.profile.photo %}
+                                        <img class="comment-photo"
+                                             src="/media/{{ user.profile.photo }}"
+                                             alt="{% trans "Profile photo" %}">
+                                    {% else %}
+                                        <img class="comment-photo"
+                                             src="{% static "img/no-photo.png" %}"
+                                             alt="{% trans "Profile photo" %}">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-11">
+                                <form class="new-comment">
+                                    <div class="form-group">
+                                             <textarea class="form-control" id="comment"
+                                                       placeholder="{% trans "Comment" %}"
+                                                       required></textarea>
+                                    </div>
+                                    <button type="submit" class="form-button btn btn-primary">
+                                        {% trans "Send comment" %}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
 
             </div>
 
