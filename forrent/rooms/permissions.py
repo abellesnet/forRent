@@ -22,3 +22,10 @@ class IsAuthorizedGuest(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return obj.guest == request.user
+
+
+class CreateReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        if view.action in ('list', 'retrieve', 'create',):
+            return True
+        return False

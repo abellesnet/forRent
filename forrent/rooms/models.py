@@ -133,3 +133,10 @@ class RoomRating(Model):
 
     def __str__(self):
         return str(self.room)
+
+
+class RoomComment(Model):
+    room = ForeignKey(Room)
+    author = ForeignKey(User)
+    comment = TextField()
+    created_at = DateTimeField(auto_now_add=True)
