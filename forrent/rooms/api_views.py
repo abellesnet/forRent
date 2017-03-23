@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from rooms.models import RoomBooking, RoomRating, RoomComment
+from rooms.models import RoomBooking, RoomRating, RoomComment, Room, RoomAmenity
 from rooms.permissions import IsBookingOwner, IsAuthorizedGuest, CreateReadOnly
 from rooms.serializers import RoomBookingSerializer, RoomRatingSerializer, RoomCommentSerializer, \
-    RoomCommentCreateSerializer
+    RoomCommentCreateSerializer, RoomSerializer, RoomAmenitySerializer
 
 
 class RoomBookingViewSet(ModelViewSet):
@@ -45,3 +45,14 @@ class RoomCommentViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class RoomViewSet(ReadOnlyModelViewSet):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+    filter_fields = ('host',)
+
+
+class RoomAmenityViewSet(ReadOnlyModelViewSet):
+    queryset = RoomAmenity.objects.all()
+    serializer_class = RoomAmenitySerializer

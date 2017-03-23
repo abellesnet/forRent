@@ -6,7 +6,7 @@ from django.urls import reverse
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from rooms.models import RoomBooking, RoomRating, RoomComment
+from rooms.models import RoomBooking, RoomRating, RoomComment, Room, RoomAmenity
 
 
 class RoomBookingSerializer(ModelSerializer):
@@ -53,3 +53,15 @@ class RoomCommentCreateSerializer(ModelSerializer):
     class Meta:
         model = RoomComment
         fields = ('id', 'room', 'comment',)
+
+
+class RoomSerializer(ModelSerializer):
+    class Meta:
+        model = Room
+        exclude = ('created_at', 'modified_at',)
+
+
+class RoomAmenitySerializer(ModelSerializer):
+    class Meta:
+        model = RoomAmenity
+        fields = '__all__'
