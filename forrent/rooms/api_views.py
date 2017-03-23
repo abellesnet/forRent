@@ -2,10 +2,10 @@
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
-from rooms.models import RoomBooking, RoomRating, RoomComment, Room
+from rooms.models import RoomBooking, RoomRating, RoomComment, Room, RoomAmenity
 from rooms.permissions import IsBookingOwner, IsAuthorizedGuest, CreateReadOnly
 from rooms.serializers import RoomBookingSerializer, RoomRatingSerializer, RoomCommentSerializer, \
-    RoomCommentCreateSerializer, RoomSerializer
+    RoomCommentCreateSerializer, RoomSerializer, RoomAmenitySerializer
 
 
 class RoomBookingViewSet(ModelViewSet):
@@ -50,4 +50,9 @@ class RoomCommentViewSet(ModelViewSet):
 class RoomViewSet(ReadOnlyModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    filter_fields = ('host', )
+    filter_fields = ('host',)
+
+
+class RoomAmenityViewSet(ReadOnlyModelViewSet):
+    queryset = RoomAmenity.objects.all()
+    serializer_class = RoomAmenitySerializer
