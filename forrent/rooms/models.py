@@ -51,6 +51,8 @@ class Room(Model):
     host = ForeignKey(User)
     name = CharField(max_length=128)
     description = TextField(null=True, blank=True)
+    address = CharField(max_length=255, null=True, blank=True)
+    map = CharField(max_length=255, null=True, blank=True)
     accommodates = IntegerField(validators=[MinValueValidator(1)])
     beds = IntegerField(validators=[MinValueValidator(1)])
     private_bathroom = BooleanField()
