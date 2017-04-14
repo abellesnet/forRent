@@ -32,6 +32,15 @@
 
             <div class="row">
                 <div class="form-group col-xs-12">
+                    <label for="id_location">{% trans "Location" %}:</label>
+                    <input id="id_location" name="location" type="text" value="{{ form.address.value }}" required="">
+                    <input id="id_address" name="address" type="hidden">
+                    <input id="id_map" name="map" type="hidden">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12">
                     {{ form.main_photo.label_tag }}
                     {{ form.main_photo }}
                     {{ form.main_photo.errors }}
