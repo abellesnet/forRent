@@ -63,6 +63,26 @@
 
                 <hr>
 
+                {% if room.address %}
+
+                    <section class="row">
+                        <iframe
+                                width="100%"
+                                height="450"
+                                frameborder="0" style="border:0"
+                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBVqi2Xz7a-urRZ9dieK8aPdOmh14SAc2o&q={{ room.address | urlencode }}"
+                                allowfullscreen>
+                        </iframe>
+                    </section>
+
+                    <section class="row">
+                        <span class="price col-xs-12">{{ room.address }}</span>
+                    </section>
+
+                    <hr>
+
+                {% endif %}
+
                 <section>
                     <div class="row">
                         <div class="col-xs-4 text-center">
