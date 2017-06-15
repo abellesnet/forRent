@@ -1,6 +1,6 @@
 # forRent
 
-#### A home renting app
+#### A room renting app
 
 ## Microservices and Docker
 
@@ -11,6 +11,10 @@ This app consists of three microservices:
 * Worker (ImageProcessor)
 
 These microservices can run in an isolated Docker containers. You can start the containers using the script in `start_services.sh`.
+
+Requisites: [docker-compose](https://docs.docker.com/compose/install/)
+
+After start containers, navigate to <http://localhost:8000/>
 
 Other useful commands:
 
@@ -34,6 +38,13 @@ You can avoid start from scratch. The project includes a command to load samples
 
 ## Changelog
 
+v3.0
+* Rate rooms
+* Comments on rooms
+* API Rest
+* Locate rooms
+* Search rooms
+
 v2.0
 * Rent a room
 
@@ -46,4 +57,4 @@ v1.0
 * Image optimization
 * Internationalization
 * Microservices
-* Amazon ECS with Doker deploy
+* Amazon ECS with Docker deploy
