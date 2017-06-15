@@ -3,7 +3,7 @@ from django.conf.urls import url, include
 
 from rooms import api_urls
 from rooms.views import MyRoomsListView, RoomCreateView, RoomDetailView, RoomUpdateView, RoomDeleteView, RoomListView, \
-    RoomBookingListView, RoomBookingDeleteView
+    RoomBookingListView, RoomBookingDeleteView, RoomSearchView
 
 urlpatterns = [
 
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^r/(?P<pk>[0-9]+)/$', RoomDetailView.as_view(), name='room_detail'),
     url(r'^u/(?P<pk>[0-9]+)/$', RoomUpdateView.as_view(), name='room_update'),
     url(r'^d/(?P<pk>[0-9]+)/$', RoomDeleteView.as_view(), name='room_delete'),
+    url(r'^search/$', RoomSearchView.as_view(), name='room_search'),
     url(r'^$', RoomListView.as_view(), name='room_list'),
 
     url(r'^booking/$', RoomBookingListView.as_view(), name='roombooking_list'),
