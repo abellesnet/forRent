@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib.auth.views import login, logout
 
+from users import api_urls
 from users.views import CreateUserView, ProfileDetailView, ProfileUpdateView
 
 urlpatterns = [
+
+    url(r'^api/', include(api_urls)),
 
     url(r'user/$', CreateUserView.as_view(), name='user_create'),
     url(r'login/$', login, {'template_name': 'login_form.html'}, name='login'),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-11 11:10+0000\n"
+"POT-Creation-Date: 2017-06-15 00:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,20 +32,25 @@ msgstr "Mis habitaciones"
 msgid "My bookings"
 msgstr "Mis reservas"
 
-#: forrent/templates/includes/header.html:47
+#: forrent/templates/includes/header.html:41
+#: rooms/templates/room_search.html:55
+msgid "Search"
+msgstr "Buscar"
+
+#: forrent/templates/includes/header.html:50
 msgid "Site administration"
 msgstr "Administración del sitio"
 
-#: forrent/templates/includes/header.html:56
+#: forrent/templates/includes/header.html:59
 msgid "Logout"
 msgstr "Salir"
 
-#: forrent/templates/includes/header.html:61
+#: forrent/templates/includes/header.html:64
 #: users/templates/user_create.html:55
 msgid "Register"
 msgstr "Registrarse"
 
-#: forrent/templates/includes/header.html:65 users/templates/login_form.html:36
+#: forrent/templates/includes/header.html:68 users/templates/login_form.html:36
 msgid "Login"
 msgstr "Entrar"
 
@@ -65,11 +70,11 @@ msgstr "Descripción"
 msgid "Accommodates"
 msgstr "Capacidad"
 
-#: rooms/forms.py:17 rooms/templates/includes/room_detailed.html:78
+#: rooms/forms.py:17 rooms/templates/includes/room_detailed.html:106
 msgid "Beds"
 msgstr "Camas"
 
-#: rooms/forms.py:18 rooms/templates/includes/room_detailed.html:82
+#: rooms/forms.py:18 rooms/templates/includes/room_detailed.html:110
 msgid "Private bathroom"
 msgstr "Baño privado"
 
@@ -93,6 +98,26 @@ msgstr "Disponible hasta"
 msgid "Main photo"
 msgstr "Foto principal"
 
+#: rooms/forms.py:33 rooms/templates/room_form.html:35
+msgid "Location"
+msgstr "Localización"
+
+#: rooms/forms.py:34
+msgid "Min Accomodates"
+msgstr "Capacidad mínima"
+
+#: rooms/forms.py:35
+msgid "Max Accomodates"
+msgstr "Capacidad máxima"
+
+#: rooms/forms.py:36
+msgid "Min Price"
+msgstr "Precio mínimo"
+
+#: rooms/forms.py:37
+msgid "Max Price"
+msgstr "Precio máximo"
+
 #: rooms/templates/includes/host_buttons.html:11
 #: users/templates/includes/owner_buttons.html:10
 msgid "Update"
@@ -113,6 +138,8 @@ msgstr "Reservas"
 #: rooms/templates/includes/room_bookings.html:26
 #: rooms/templates/includes/room_detailed.html:39
 #: rooms/templates/includes/room_detailed.html:43
+#: rooms/templates/includes/room_detailed.html:183
+#: rooms/templates/includes/room_detailed.html:187
 #: rooms/templates/includes/room_in_list.html:23
 #: rooms/templates/includes/room_in_list.html:27
 #: users/templates/includes/profile_detailed.html:14
@@ -129,39 +156,51 @@ msgstr "Todavía no hay reservas."
 msgid "My room"
 msgstr "Mi habitación"
 
-#: rooms/templates/includes/room_detailed.html:75
+#: rooms/templates/includes/room_detailed.html:103
 msgid "Guests"
 msgstr "Huéspedes"
 
-#: rooms/templates/includes/room_detailed.html:103
+#: rooms/templates/includes/room_detailed.html:131
 msgid "per day"
 msgstr "por día"
 
-#: rooms/templates/includes/room_detailed.html:119
+#: rooms/templates/includes/room_detailed.html:151
+msgid "Rate this room:"
+msgstr "Valora esta habitación"
+
+#: rooms/templates/includes/room_detailed.html:195
+msgid "Comment"
+msgstr "Comentar"
+
+#: rooms/templates/includes/room_detailed.html:199
+msgid "Send comment"
+msgstr "Enviar"
+
+#: rooms/templates/includes/room_detailed.html:215
 msgid "Availability"
 msgstr "Disponibilidad"
 
-#: rooms/templates/includes/room_detailed.html:134
+#: rooms/templates/includes/room_detailed.html:230
 msgid "You must be authenticated to make a reservation"
 msgstr "Debes iniciar sesión para hacer una reserva"
 
-#: rooms/templates/includes/room_detailed.html:159
+#: rooms/templates/includes/room_detailed.html:255
 msgid "Since"
 msgstr "Desde"
 
-#: rooms/templates/includes/room_detailed.html:163
+#: rooms/templates/includes/room_detailed.html:259
 msgid "To"
 msgstr "Hasta"
 
-#: rooms/templates/includes/room_detailed.html:167
+#: rooms/templates/includes/room_detailed.html:263
 msgid "Days"
 msgstr "Días"
 
-#: rooms/templates/includes/room_detailed.html:171
+#: rooms/templates/includes/room_detailed.html:267
 msgid "Price"
 msgstr "Precio"
 
-#: rooms/templates/includes/room_detailed.html:181
+#: rooms/templates/includes/room_detailed.html:277
 msgid "Book"
 msgstr "Reservar"
 
@@ -173,15 +212,15 @@ msgstr "Todavía no hay habitaciones."
 msgid "Are you sure you want to delete this room?"
 msgstr "¿Estás seguro de que deseas borrar esta habitación?"
 
-#: rooms/templates/room_delete.html:29 rooms/templates/room_form.html:97
-#: rooms/templates/room_form.html:102
+#: rooms/templates/room_delete.html:29 rooms/templates/room_form.html:106
+#: rooms/templates/room_form.html:111 rooms/templates/room_search.html:59
 #: rooms/templates/roombooking_delete.html:29
 #: users/templates/profile_form.html:37 users/templates/profile_form.html:42
 #: users/templates/user_create.html:60
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: rooms/templates/room_form.html:91 users/templates/profile_form.html:31
+#: rooms/templates/room_form.html:100 users/templates/profile_form.html:31
 msgid "Save"
 msgstr "Guardar"
 

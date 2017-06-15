@@ -188,3 +188,9 @@ RESPONSIVE_IMAGE_QUEUE = 'responsive_image'
 
 HOSTS_GROUP_NAME = 'Hosts'
 GUESTS_GROUP_NAME = 'Guests'
+
+# REST Framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+}

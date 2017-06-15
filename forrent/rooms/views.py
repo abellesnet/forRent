@@ -1,13 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.timezone import now
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 from django.views.generic import DeleteView
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic import UpdateView
 
-from rooms.forms import CreateRoomForm, UpdateRoomForm
+from rooms.forms import CreateRoomForm, UpdateRoomForm, RoomSearchForm
 from rooms.models import Room, RoomBooking
 
 
@@ -64,8 +64,31 @@ class RoomListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        return Room.objects.filter(available_to__gt=now()).order_by('-available_since') \
+        qs = Room.objects.filter(available_to__gt=now()).order_by('-available_since') \
             .select_related('host').prefetch_related('amenity_set')
+        if self.request.GET.get('location_search'):
+            qs = qs.filter(address__icontains=self.request.GET.get('location_search'))
+        if self.request.GET.get('accommodates_min'):
+            qs = qs.filter(accommodates__gte=self.request.GET.get('accommodates_min'))
+        if self.request.GET.get('accommodates_max'):
+            qs = qs.filter(accommodates__lte=self.request.GET.get('accommodates_max'))
+        if self.request.GET.get('price_min'):
+            qs = qs.filter(price_per_day__gte=self.request.GET.get('price_min'))
+        if self.request.GET.get('price_max'):
+            qs = qs.filter(price_per_day__lte=self.request.GET.get('price_max'))
+        return qs
+
+
+class RoomSearchView(FormView):
+    template_name = 'room_search.html'
+    form_class = RoomSearchForm
+
+    def get_success_url(self):
+        url = reverse('room_list')
+        qs = '&'.join(
+            ['='.join((field, value,)) for field, value in self.request.POST.items() if field != 'csrfmiddlewaretoken']
+        )
+        return '?'.join((url, qs))
 
 
 class RoomBookingListView(LoginRequiredMixin, ListView):

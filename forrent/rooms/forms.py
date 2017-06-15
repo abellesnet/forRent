@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.forms import ModelForm
+from django.forms import ModelForm, Form, CharField, IntegerField, DateField, DateInput
 from django.utils.translation import ugettext_lazy as _
 
 from rooms.models import Room
@@ -27,3 +27,11 @@ class CreateRoomForm(ModelForm):
 class UpdateRoomForm(CreateRoomForm):
     class Meta(CreateRoomForm.Meta):
         exclude = ('host', 'main_photo',)
+
+
+class RoomSearchForm(Form):
+    location_search = CharField(label=_('Location'), required=False)
+    accommodates_min = IntegerField(label=_('Min Accomodates'), required=False, min_value=0)
+    accommodates_max = IntegerField(label=_('Max Accomodates'), required=False, min_value=0)
+    price_min = IntegerField(label=_('Min Price'), required=False, min_value=0)
+    price_max = IntegerField(label=_('Max Price'), required=False, min_value=0)

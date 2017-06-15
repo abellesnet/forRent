@@ -48,12 +48,40 @@
                             <div class="host col-xs-12">
                                 <a href="{{ room.host.profile.get_absolute_url }}">{{ room.host.get_full_name }}</a>
                             </div>
-                            {#                    <div class="rating col-xs-12">rating</div>#}
+                            <div class="rating col-xs-12">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= room.rating %}
+                                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                                    {% else %}
+                                        <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 <hr>
+
+                {% if room.address %}
+
+                    <section class="row">
+                        <iframe
+                                width="100%"
+                                height="450"
+                                frameborder="0" style="border:0"
+                                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBVqi2Xz7a-urRZ9dieK8aPdOmh14SAc2o&q={{ room.address | urlencode }}"
+                                allowfullscreen>
+                        </iframe>
+                    </section>
+
+                    <section class="row">
+                        <span class="price col-xs-12">{{ room.address }}</span>
+                    </section>
+
+                    <hr>
+
+                {% endif %}
 
                 <section>
                     <div class="row">
@@ -106,10 +134,78 @@
                 <hr>
 
                 <section class="row">
-                    <p class="col-xs-12 text-justify">
+                    <p class="col-xs-12">
                         {{ room.description }}
                     </p>
                 </section>
+
+                {% if user in room.get_past_guests %}
+
+                    <hr>
+
+                    <section class="row">
+                        <p class="room-rating col-xs-12"
+                           data-room-pk="{{ room.pk }}"
+                           data-roomrating-api="{% url 'roomrating-list' %}"
+                        >
+                            {% trans "Rate this room:" %}
+                            {% for i in "12345" %}
+                                <span class="glyphicon glyphicon-star-empty rating-star" aria-hidden="true"
+                                      id="star{{ i }}">
+                                    </span>
+                            {% endfor %}
+                        </p>
+                    </section>
+
+                {% endif %}
+
+
+                <hr>
+
+                <section class="comments"
+                         data-room-pk="{{ room.pk }}"
+                         data-roomcomments-api="{% url 'roomcomment-list' %}"
+                >
+                    <div class="comments-list">
+                        <div class="comments-container">
+
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-1">
+                                <a href="{{ user.profile.get_absolute_url }}">
+                                    {% if user.profile.photo %}
+                                        <img class="comment-photo"
+                                             src="/media/{{ user.profile.photo }}"
+                                             alt="{% trans "Profile photo" %}">
+                                    {% else %}
+                                        <img class="comment-photo"
+                                             src="{% static "img/no-photo.png" %}"
+                                             alt="{% trans "Profile photo" %}">
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="col-xs-12 col-sm-11">
+                                <form class="new-comment">
+                                    <div class="form-group">
+                                             <textarea class="form-control" id="comment"
+                                                       placeholder="{% trans "Comment" %}"
+                                                       required></textarea>
+                                    </div>
+                                    <button type="submit" class="form-button btn btn-primary">
+                                        {% trans "Send comment" %}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
 
             </div>
 

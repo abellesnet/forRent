@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+
+    <div class="container">
+
+        <form class="room-form" method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="row">
+                {{ form.non_field_errors }}
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    {{ form.location_search.label_tag }}
+                    {{ form.location_search }}
+                    {{ form.location_search.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-6">
+                    {{ form.accommodates_min.label_tag }}
+                    {{ form.accommodates_min }}
+                    {{ form.accommodates_min.errors }}
+                </div>
+                <div class="form-group col-xs-6">
+                    {{ form.accommodates_max.label_tag }}
+                    {{ form.accommodates_max }}
+                    {{ form.accommodates_max.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-xs-6">
+                    {{ form.price_min.label_tag }}
+                    {{ form.price_min }}
+                    {{ form.price_min.errors }}
+                </div>
+                <div class="form-group col-xs-6">
+                    {{ form.price_max.label_tag }}
+                    {{ form.price_max }}
+                    {{ form.price_max.errors }}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center">
+                    <button type="submit" class="host-button form-button btn btn-primary">
+                        <span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span>
+                        {% trans "Search" %}
+                    </button>
+                    <a class="host-button btn btn-default" role="button" href="{% url 'room_list' %}">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        {% trans "Cancel" %}
+                    </a>
+                </div>
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+{% endblock %}
