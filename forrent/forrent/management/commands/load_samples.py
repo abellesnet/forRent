@@ -90,17 +90,17 @@ class Command(BaseCommand):
 
         create_users((
             ('Sheldon Cooper', GUESTS_GROUP_NAME,
-             'http://javiercantera.com/wp-content/uploads/2015/02/tumblr_static_dc056b4f8c9493f3c64e6e0a85382b31.jpg'),
+             'http://wwwimage1.cbsstatic.com/thumbnails/photos/w170-h215/cast/cast_bigbang_jimparsons.jpg'),
             ('Penny Penny Penny', HOSTS_GROUP_NAME,
-             'http://www.tentacionesdemujer.com/wordpress/wp-content/uploads/2015/01/FACE.jpg'),
+             'http://wwwimage2.cbsstatic.com/thumbnails/photos/w170-h215/cast/cast_bigbang_kaleycuoco.jpg'),
             ('Leonard Hofstadter', GUESTS_GROUP_NAME,
-             'https://pbs.twimg.com/profile_images/2654852680/87ee5ed912ea7364a29a380be9b22285.jpeg'),
+             'http://wwwimage5.cbsstatic.com/thumbnails/photos/w170-h215/cast/cast_bigbang_johnnygalecki.jpg'),
             ('Howard Wolowitz', GUESTS_GROUP_NAME,
-             'http://vignette2.wikia.nocookie.net/bigbangtheory/images/6/6a/Howardwolowitz.jpg'),
+             'http://wwwimage5.cbsstatic.com/thumbnails/photos/w170-h215/cast/cast_bigbang_simonhelberg.jpg'),
             ('Raj Koothrappali', GUESTS_GROUP_NAME,
-             'http://vaais.com/Files/images/personajes/216.jpg'),
+             'http://wwwimage4.cbsstatic.com/thumbnails/photos/w170-h215/cast/cast_bigbang_kunalnayyar.jpg'),
             ('Amy Farrah Fowler', HOSTS_GROUP_NAME,
-             'http://gorabbit.ru/upload/iblock/fd0/fd059a0ec3f3cd284592312e1b1706af.jpg'),
+             'http://wwwimage3.cbsstatic.com/thumbnails/photos/w170-h215/cast/cast_bigbang_mayimbialik.jpg'),
         ))
 
         create_room_amenities(
